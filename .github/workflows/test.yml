@@ -8,11 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Baseline Guard
-        uses: ./
+        uses: ./ # This points to the action in the current repository
         id: baseline
         with:
-          target-baseline: "2023"
-          scan-files: "**/*.js"    # changed to JS since you only have index.js
-          fail-on-newly: "true"
+          target-baseline: '2023'
+          scan-files: 'src/**/*.css' # Adjust to your repository
+          fail-on-newly: 'true'
       - name: Check Output
         run: echo "Violations found: ${{ steps.baseline.outputs.violations-found }}"

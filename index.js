@@ -1,7 +1,8 @@
 const core = require('@actions/core');
 const fs = require('fs');
 const path = require('path');
-const doiuse = require('doiuse');
+const doiuse = require('doiuse/lib/DoIUse');
+const postcss = require('postcss');
 const { glob } = require('glob');
 
 // Inline toDate function
@@ -80,35 +81,6 @@ function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
     const allFeatures = Object.values(features);
 
-
-    try {
-        const dataPath = require.resolve('web-features/data.json');
-        features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-        
-        // Add detailed debugging
-        core.debug('Full web-features data structure: ' + JSON.stringify(features, null, 2));
-        if (Object.keys(features).length > 0) {
-            const firstFeatureKey = Object.keys(features)[0];
-            const sampleFeature = features[firstFeatureKey];
-            core.debug(`Sample feature (${firstFeatureKey}): ` + JSON.stringify(sampleFeature, null, 2));
-            core.debug(`Sample feature baseline status: ${sampleFeature.status?.baseline}`);
-            core.debug(`Sample feature baseline_high_date: ${sampleFeature.baseline_high_date}`);
-        }
-        
-        } catch (error) {
-        core.setFailed(`Failed to load web-features: ${error.message}`);
-        process.exit(1);
-        }
-    // Add debug logging to understand the data structure
-    core.debug(`Total features loaded: ${allFeatures.length}`);
-    if (allFeatures.length > 0) {
-        const sampleFeature = allFeatures[0];
-        core.debug(`Sample feature structure: ${JSON.stringify(sampleFeature, null, 2)}`);
-        core.debug(`Sample feature ID: ${sampleFeature.id}`);
-        core.debug(`Sample feature baseline status: ${sampleFeature.status?.baseline}`);
-    }
-    
-
     const lowerTarget = target.toLowerCase();
 
     // Validate target-baseline
@@ -117,10 +89,9 @@ function getCompliantFeatureIds(target, failOnNewly) {
     }
 
     for (const feature of allFeatures) {
-        // Robust handling of missing fields
         const status = feature.status?.baseline || '';
-        const highDate = feature.baseline_high_date || '';
-        const lowDate = feature.baseline_low_date || '';
+        const highDate = feature.status?.baseline_high_date || '';
+        const lowDate = feature.status?.baseline_low_date || '';
         const featureId = feature.id || '';
 
         let isCompliant = false;
@@ -180,33 +151,24 @@ async function run() {
         // 3. Scan Files (CSS and JS)
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
-        const browserslistConfig = Array.from(compliantFeatureIds).map(feature => `supports ${feature}`);
-        const doiuseProcessor = doiuse.create({ // Use doiuse.create() here
-        browsers: browserslistConfig,
-        ignore: []
-        });
 
         for (const filePath of filePaths) {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
-                try {
-                // Use the processor to analyze the CSS
-                const result = await doiuseProcessor(cssContent, filePath);
-                // Process the usage information from the result
-                if (result.usage && result.usage.length > 0) {
-                    result.usage.forEach(usageInfo => {
-                    // usageInfo.feature contains the feature ID that was used
-                    allViolations.push({
-                        file: filePath,
-                        line: usageInfo.line || 'unknown',
-                        feature: usageInfo.feature,
-                        reason: `CSS feature not compliant with ${targetBaseline}`
-                    });
-                    });
-                }
-                } catch (err) {
-                core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
-                }
+                await postcss(new doiuse({
+                    browsers: [],
+                    onFeatureUsage: (usage) => {
+                        const featureId = usage.feature;
+                        if (!compliantFeatureIds.has(featureId)) {
+                            allViolations.push({
+                                file: filePath,
+                                line: usage.line || 'unknown',
+                                feature: featureId,
+                                reason: `Not found in Baseline Target: ${targetBaseline}`
+                            });
+                        }
+                    }
+                })).process(cssContent, { from: filePath });
             } else if (filePath.endsWith('.js')) {
                 const jsContent = fs.readFileSync(filePath, 'utf-8');
                 const nonCompliantAPIs = ['fetch', 'Promise.any'];

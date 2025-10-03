@@ -6,6 +6,18 @@ const path = require('path');
 const doiuse = require('doiuse');
 const { glob } = require('glob');
 
+let features;
+
+try {
+    const webFeatures = require('web-features');
+    features = webFeatures.features || webFeatures.default?.features || {};
+    core.debug('Loaded web-features: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+} catch (error) {
+    core.setFailed(`Failed to load web-features: ${error.message}`);
+    process.exit(1);
+}
+
+// ... rest of your index.js code (getCompliantFeatureIds, run, etc.) ...
 /**
  * Maps the user's target-baseline input to a list of feature IDs that meet that standard.
  * @param {string} target The user input (e.g., 'widely', 'newly', '2023').

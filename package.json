@@ -7,13 +7,20 @@
     "build": "rimraf dist && ncc build index.js --license licenses.txt",
     "start": "node index.js"
   },
-  "keywords": ["github-action", "web-features", "baseline", "css", "javascript"],
+  "keywords": [
+    "github-action",
+    "web-features",
+    "baseline",
+    "css",
+    "javascript"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "doiuse": "^6.0.5",
     "glob": "^11.0.3",
+    "postcss": "^8.5.6",
     "web-features": "^3.3.0"
   },
   "devDependencies": {

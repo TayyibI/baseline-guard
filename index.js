@@ -3,8 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const doiuse = require('doiuse');
 const { glob } = require('glob');
-const { toDate } = require('./utils');
 
+function toDate(dateString) {
+    return new Date(dateString);
+}
 let features;
 try {
     const dataPath = require.resolve('web-features/data.json');

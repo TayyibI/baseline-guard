@@ -4,9 +4,11 @@ const path = require('path');
 const doiuse = require('doiuse');
 const { glob } = require('glob');
 
+// Inline toDate function
 function toDate(dateString) {
     return new Date(dateString);
 }
+
 let features;
 try {
     const dataPath = require.resolve('web-features/data.json');
@@ -17,6 +19,7 @@ try {
     process.exit(1);
 }
 
+// ... rest of index.js (generateReport, getCompliantFeatureIds, run) ...
 function generateReport(violations, targetBaseline) {
     let report = `
     <!DOCTYPE html>

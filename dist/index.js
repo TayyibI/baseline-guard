@@ -55429,17 +55429,18 @@ async function run() {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
                 try {
-                // Use the processor to analyze the CSS
-                const result = await doiuseProcessor(cssContent, filePath);
-                result.warnings.forEach(warning => {
-                    // Extract the feature identifier from the warning message
-                    const featureMatch = warning.text.match(/Not supported in (.+?)\s/);
-                    const featureId = featureMatch ? featureMatch[1] : 'unknown-feature';
-                    
+                // Use doiuse as a function that returns a processor
+                const result = await doiuse({
+                    browsers: Array.from(compliantFeatureIds),
+                    ignore: []
+                })(cssContent);
+                
+                // Process the results
+                result.messages.forEach(message => {
                     allViolations.push({
                     file: filePath,
-                    line: warning.line || 'unknown',
-                    feature: featureId,
+                    line: message.line || 'unknown',
+                    feature: message.feature || 'unknown',
                     reason: `CSS feature not compliant with ${targetBaseline}`
                     });
                 });

@@ -55283,8 +55283,8 @@ let features;
 try {
     const dataPath = __nccwpck_require__.ab + "data.json";
     features = JSON.parse(fs.readFileSync(__nccwpck_require__.ab + "data.json", 'utf-8'));
-    core.debug('Loaded web-features: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
-    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]], null, 2));
+    core.debug('Loaded web-features keys: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]] || {}, null, 2));
 } catch (error) {
     core.setFailed(`Failed to load web-features: ${error.message}`);
     process.exit(1);
@@ -55358,10 +55358,11 @@ function getCompliantFeatureIds(target, failOnNewly) {
     }
 
     for (const feature of allFeatures) {
-        // Handle missing or malformed status data
+        // Robust handling of missing fields
         const status = feature.status?.baseline || '';
         const highDate = feature.baseline_high_date || '';
         const lowDate = feature.baseline_low_date || '';
+        const featureId = feature.id || '';
 
         let isCompliant = false;
 
@@ -55385,9 +55386,9 @@ function getCompliantFeatureIds(target, failOnNewly) {
             }
         }
 
-        if (isCompliant && feature.id) {
-            compliantIds.add(feature.id);
-            core.debug(`Compliant feature: ${feature.id}`);
+        if (isCompliant && featureId) {
+            compliantIds.add(featureId);
+            core.debug(`Compliant feature: ${featureId}`);
         }
     }
 
@@ -55420,24 +55421,31 @@ async function run() {
         // 3. Scan Files (CSS and JS)
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
-
+        const doiuseProcessor = doiuse({
+            browsers: Array.from(compliantFeatureIds), // This tells doiuse what features ARE allowed
+            ignore: [], // You can add features to ignore here if needed
+            });
         for (const filePath of filePaths) {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
-                doiuse({
-                    browsers: [],
-                    onFeatureUsage: (usage) => {
-                        const featureId = usage.feature;
-                        if (!compliantFeatureIds.has(featureId)) {
-                            allViolations.push({
-                                file: filePath,
-                                line: usage.line || 'unknown',
-                                feature: featureId,
-                                reason: `Not found in Baseline Target: ${targetBaseline}`
-                            });
-                        }
-                    }
-                })(cssContent, { from: filePath });
+                try {
+                // Use the processor to analyze the CSS
+                const result = await doiuseProcessor(cssContent, filePath);
+                result.warnings.forEach(warning => {
+                    // Extract the feature identifier from the warning message
+                    const featureMatch = warning.text.match(/Not supported in (.+?)\s/);
+                    const featureId = featureMatch ? featureMatch[1] : 'unknown-feature';
+                    
+                    allViolations.push({
+                    file: filePath,
+                    line: warning.line || 'unknown',
+                    feature: featureId,
+                    reason: `CSS feature not compliant with ${targetBaseline}`
+                    });
+                });
+                } catch (err) {
+                core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
+                }
             } else if (filePath.endsWith('.js')) {
                 const jsContent = fs.readFileSync(filePath, 'utf-8');
                 const nonCompliantAPIs = ['fetch', 'Promise.any'];
@@ -55488,7 +55496,6 @@ async function run() {
 }
 
 run();
-
 module.exports = __webpack_exports__;
 /******/ })()
 ;

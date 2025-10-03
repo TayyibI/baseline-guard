@@ -1,31 +1,24 @@
 name: 'Baseline Guard'
 description: 'Enforce a Web Platform Baseline compatibility target on your code.'
-
 inputs:
   target-baseline:
     description: 'The Baseline target to enforce (e.g., widely, newly, 2023, 2024).'
     required: true
     default: 'widely'
-  
   scan-files:
     description: 'Glob pattern for files to scan (e.g., **/*.css, dist/**/*.js).'
     required: true
-  
   fail-on-newly:
     description: 'Set to true to only allow features that are Baseline Widely Available.'
     required: false
     default: 'false'
-  
   report-artifact-name:
     description: 'The name of the HTML report artifact to upload on failure.'
     required: false
     default: 'baseline-guard-report'
-
 outputs:
   violations-found:
     description: 'A boolean indicating if any violations were found.'
-
 runs:
   using: 'node20'
-  main: 'dist/index.js' # This will be created by the 'npm run build' command
-  
+  main: 'dist/index.js'

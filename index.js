@@ -80,6 +80,25 @@ function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
     const allFeatures = Object.values(features);
 
+
+    try {
+        const dataPath = require.resolve('web-features/data.json');
+        features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+        
+        // Add detailed debugging
+        core.debug('Full web-features data structure: ' + JSON.stringify(features, null, 2));
+        if (Object.keys(features).length > 0) {
+            const firstFeatureKey = Object.keys(features)[0];
+            const sampleFeature = features[firstFeatureKey];
+            core.debug(`Sample feature (${firstFeatureKey}): ` + JSON.stringify(sampleFeature, null, 2));
+            core.debug(`Sample feature baseline status: ${sampleFeature.status?.baseline}`);
+            core.debug(`Sample feature baseline_high_date: ${sampleFeature.baseline_high_date}`);
+        }
+        
+        } catch (error) {
+        core.setFailed(`Failed to load web-features: ${error.message}`);
+        process.exit(1);
+        }
     // Add debug logging to understand the data structure
     core.debug(`Total features loaded: ${allFeatures.length}`);
     if (allFeatures.length > 0) {
@@ -161,29 +180,30 @@ async function run() {
         // 3. Scan Files (CSS and JS)
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
-        const doiuseProcessor = doiuse({
-            browsers: Array.from(compliantFeatureIds), // This tells doiuse what features ARE allowed
-            ignore: [], // You can add features to ignore here if needed
-            });
+        const browserslistConfig = Array.from(compliantFeatureIds).map(feature => `supports ${feature}`);
+        const doiuseProcessor = doiuse.create({ // Use doiuse.create() here
+        browsers: browserslistConfig,
+        ignore: []
+        });
+
         for (const filePath of filePaths) {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
                 try {
-                // Use doiuse as a function that returns a processor
-                const result = await doiuse({
-                    browsers: Array.from(compliantFeatureIds),
-                    ignore: []
-                })(cssContent);
-                
-                // Process the results
-                result.messages.forEach(message => {
+                // Use the processor to analyze the CSS
+                const result = await doiuseProcessor(cssContent, filePath);
+                // Process the usage information from the result
+                if (result.usage && result.usage.length > 0) {
+                    result.usage.forEach(usageInfo => {
+                    // usageInfo.feature contains the feature ID that was used
                     allViolations.push({
-                    file: filePath,
-                    line: message.line || 'unknown',
-                    feature: message.feature || 'unknown',
-                    reason: `CSS feature not compliant with ${targetBaseline}`
+                        file: filePath,
+                        line: usageInfo.line || 'unknown',
+                        feature: usageInfo.feature,
+                        reason: `CSS feature not compliant with ${targetBaseline}`
                     });
-                });
+                    });
+                }
                 } catch (err) {
                 core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
                 }

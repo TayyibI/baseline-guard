@@ -17,7 +17,7 @@ jobs:
           scan-files: 'src/**/*.css'
           fail-on-newly: 'true'
       - name: Check Output (Widely)
-        run: echo "Violations found (widely): ${{ steps.baseline_widely.outputs.violations-found }}"
+        run: echo "Violations found (widely):${{ steps.baseline_widely.outputs.violations-found }}"
       - name: Run Baseline Guard (2023)
         uses: ./
         id: baseline_2023

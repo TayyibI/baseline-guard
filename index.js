@@ -1,9 +1,9 @@
 const core = require('@actions/core');
 const fs = require('fs');
 const path = require('path');
-const doiuse = require('doiuse/lib/DoIUse');
-const postcss = require('postcss');
+const doiuse = require('doiuse');
 const { glob } = require('glob');
+const postcss = require('postcss'); // <-- CHANGE: Import postcss
 
 // Inline toDate function
 function toDate(dateString) {
@@ -14,8 +14,6 @@ let features;
 try {
     const dataPath = require.resolve('web-features/data.json');
     features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-    core.debug('Loaded web-features keys: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
-    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]] || {}, null, 2));
 } catch (error) {
     core.setFailed(`Failed to load web-features: ${error.message}`);
     process.exit(1);
@@ -50,6 +48,7 @@ function generateReport(violations, targetBaseline) {
             <tr>
                 <th>File</th>
                 <th>Line</th>
+                <th>Column</th>
                 <th>Feature</th>
                 <th>Reason</th>
                 <th>MDN Link</th>
@@ -57,11 +56,12 @@ function generateReport(violations, targetBaseline) {
         `;
         violations.forEach(v => {
             const featureData = features[v.feature] || {};
-            const mdnLink = featureData.mdn_url || `https://developer.mozilla.org/en-US/docs/Web/${v.feature.includes('css') ? 'CSS' : 'API'}/${v.feature.replace(/-/g, '_')}`;
+            const mdnLink = featureData.mdn_url || `https://developer.mozilla.org/en-US/search?q=${v.feature}`;
             report += `
             <tr>
                 <td>${v.file}</td>
                 <td>${v.line}</td>
+                <td>${v.column}</td>
                 <td>${v.feature}</td>
                 <td>${v.reason}</td>
                 <td><a href="${mdnLink}" target="_blank">MDN</a></td>
@@ -79,8 +79,6 @@ function generateReport(violations, targetBaseline) {
 
 function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
-    const allFeatures = Object.values(features);
-
     const lowerTarget = target.toLowerCase();
 
     // Validate target-baseline
@@ -88,11 +86,12 @@ function getCompliantFeatureIds(target, failOnNewly) {
         throw new Error(`Invalid target-baseline: ${target}. Must be 'widely', 'newly', or a year (e.g., '2023').`);
     }
 
-    for (const feature of allFeatures) {
-        const status = feature.status?.baseline || '';
-        const highDate = feature.status?.baseline_high_date || '';
-        const lowDate = feature.status?.baseline_low_date || '';
-        const featureId = feature.id || '';
+    // <-- CHANGE: Switched from Object.values() to Object.entries() to get the feature ID (the key)
+    for (const [featureId, featureData] of Object.entries(features)) {
+        // Robust handling of missing fields
+        const status = featureData.status?.baseline || '';
+        const highDate = featureData.status?.baseline_high_date || '';
+        const lowDate = featureData.status?.baseline_low_date || '';
 
         let isCompliant = false;
 
@@ -102,28 +101,40 @@ function getCompliantFeatureIds(target, failOnNewly) {
             isCompliant = true;
         }
 
-        if (failOnNewly && status === 'low') {
-            isCompliant = false;
-        }
-
         const targetYear = parseInt(lowerTarget, 10);
         if (!isNaN(targetYear)) {
+            // Check if the feature became newly available in or before the target year
             if (lowDate && toDate(lowDate).getFullYear() <= targetYear) {
                 isCompliant = true;
             }
+             // Also check high date for completeness
             if (highDate && toDate(highDate).getFullYear() <= targetYear) {
                 isCompliant = true;
+            }
+        }
+        
+        // This is the gate for the 'fail-on-newly' input
+        if (failOnNewly && status === 'low') {
+            // If the target is a year, we only fail if it became 'newly' available *after* the target year.
+            if (!isNaN(targetYear)) {
+                if (lowDate && toDate(lowDate).getFullYear() > targetYear) {
+                    isCompliant = false;
+                }
+            } else {
+                 // If target is 'widely', any 'low' status is a failure.
+                isCompliant = false;
             }
         }
 
         if (isCompliant && featureId) {
             compliantIds.add(featureId);
-            core.debug(`Compliant feature: ${featureId}`);
         }
     }
 
     if (compliantIds.size === 0) {
-        core.warning('No compliant features found. Check web-features data structure.');
+        core.warning(`Warning: No features found matching the "${target}" criteria. This might mean your target is too restrictive or the feature data is not as expected.`);
+    } else {
+        core.debug(`${compliantIds.size} compliant features found. Example: ${Array.from(compliantIds)[0]}`);
     }
 
     return compliantIds;
@@ -131,7 +142,6 @@ function getCompliantFeatureIds(target, failOnNewly) {
 
 async function run() {
     try {
-        // 1. Read Inputs
         const targetBaseline = core.getInput('target-baseline', { required: true });
         const scanFiles = core.getInput('scan-files', { required: true });
         const failOnNewly = core.getInput('fail-on-newly') === 'true';
@@ -144,77 +154,85 @@ async function run() {
         core.info(`Report Name: ${reportArtifactName}`);
         core.info('------------------------------------');
 
-        // 2. Get Compliant Features
         const compliantFeatureIds = getCompliantFeatureIds(targetBaseline, failOnNewly);
         core.info(`Found ${compliantFeatureIds.size} features matching Baseline criteria.`);
 
-        // 3. Scan Files (CSS and JS)
+        // The browserslist config for doiuse is "not supports <feature>", so we need the *inverse* set.
+        const allFeatureIds = new Set(Object.keys(features));
+        const nonCompliantFeatureIds = new Set([...allFeatureIds].filter(id => !compliantFeatureIds.has(id)));
+
+        core.info(`Checking against ${nonCompliantFeatureIds.size} non-compliant features.`);
+
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
+        
+        // <-- CHANGE: This is how you create and use a doiuse processor
+        const doiusePlugin = doiuse({
+            ignore: [], // You could add features to ignore here
+            onFeatureUsage: function (usageInfo) {
+                // We will check for compliance manually inside the loop
+            }
+        });
+        const processor = postcss([doiusePlugin]);
 
         for (const filePath of filePaths) {
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
             if (filePath.endsWith('.css')) {
-                const cssContent = fs.readFileSync(filePath, 'utf-8');
-                await postcss(new doiuse({
-                    browsers: [],
-                    onFeatureUsage: (usage) => {
-                        const featureId = usage.feature;
-                        if (!compliantFeatureIds.has(featureId)) {
-                            allViolations.push({
+                try {
+                    const result = await processor.process(fileContent, { from: filePath });
+                    for (const message of result.messages) {
+                        if (message.plugin === 'doiuse' && nonCompliantFeatureIds.has(message.feature)) {
+                             allViolations.push({
                                 file: filePath,
-                                line: usage.line || 'unknown',
-                                feature: featureId,
-                                reason: `Not found in Baseline Target: ${targetBaseline}`
+                                line: message.line || 'unknown',
+                                column: message.column || 'unknown',
+                                feature: message.feature,
+                                reason: `CSS feature '${message.feature}' is not compliant with the '${targetBaseline}' Baseline target.`
                             });
                         }
                     }
-                })).process(cssContent, { from: filePath });
+                } catch (err) {
+                    core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
+                }
             } else if (filePath.endsWith('.js')) {
-                const jsContent = fs.readFileSync(filePath, 'utf-8');
-                const nonCompliantAPIs = ['fetch', 'Promise.any'];
-                nonCompliantAPIs.forEach(api => {
-                    if (jsContent.includes(api)) {
+                 // You can enhance JS scanning here. This is a placeholder.
+                 // For now, we'll check against the non-compliant list.
+                 nonCompliantFeatureIds.forEach(api => {
+                    // This is a very basic check and can have false positives.
+                    // A more robust solution would use an AST parser.
+                    if (fileContent.includes(api)) {
                         allViolations.push({
                             file: filePath,
                             line: 'unknown',
+                            column: 'unknown',
                             feature: api,
-                            reason: `Non-compliant JS API for ${targetBaseline}`
+                            reason: `Potential usage of JS feature '${api}' which is not compliant with the '${targetBaseline}' Baseline target.`
                         });
                     }
                 });
             }
         }
 
-        // 4. CI Gate Logic
         if (allViolations.length > 0) {
             core.warning(`❌ Baseline Guard found ${allViolations.length} violations against the ${targetBaseline} target.`);
-
-            // Generate and save report
-            const reportPath = 'baseline-guard-report.html';
             const reportContent = generateReport(allViolations, targetBaseline);
-            fs.writeFileSync(reportPath, reportContent);
+            fs.writeFileSync(reportArtifactName, reportContent);
 
             core.startGroup('Violation Summary');
-            core.info('| File | Line | Feature | Reason |');
-            core.info('|---|---|---|---|');
             allViolations.forEach(v => {
-                core.info(`| ${v.file} | ${v.line} | ${v.feature} | ${v.reason} |`);
+                core.error(`[${v.file}:${v.line}:${v.column}] ${v.reason}`);
             });
             core.endGroup();
 
-            allViolations.forEach(v => {
-                core.error(`[VIOLATION] Feature "${v.feature}" in ${v.file}:${v.line} is not compliant with ${targetBaseline}. See report for details.`);
-            });
-
-            core.setFailed(`Build failed due to ${allViolations.length} Baseline violations.`);
             core.setOutput('violations-found', 'true');
+            core.setFailed(`Build failed due to ${allViolations.length} Baseline violations.`);
         } else {
             core.info('✅ Baseline Guard passed! All scanned features meet the target criteria.');
             core.setOutput('violations-found', 'false');
         }
 
     } catch (error) {
-        core.setFailed(`Action failed with error: ${error.message}`);
+        core.setFailed(`Action failed with error: ${error.message}\n${error.stack}`);
     }
 }
 

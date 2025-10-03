@@ -14,8 +14,8 @@
     "@actions/core": "^1.11.1",
     "doiuse": "^6.0.5",
     "glob": "^11.0.3",
-    "postcss": "^8.4.47",
-    "web-features": "2.2.0"
+    "postcss": "^8.4.38",
+    "web-features": "^3.3.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",

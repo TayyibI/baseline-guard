@@ -10333,7 +10333,7 @@ module.exports.features = __nccwpck_require__(97221)
 module.exports.agents = __nccwpck_require__(25588).agents
 module.exports.feature = __nccwpck_require__(13702)
 module.exports.features = __nccwpck_require__(13229).features
-/* unused reexport */ __nccwpck_require__(84358)
+module.exports.region = __nccwpck_require__(84358)
 
 
 /***/ }),
@@ -52250,66 +52250,41 @@ const s={chrome:{releases:[["1","2008-12-11","r","w","528"],["2","2009-05-21","r
 
 /***/ }),
 
-/***/ 4910:
-/***/ ((module) => {
-
-// This alphabet uses `A-Za-z0-9_-` symbols.
-// The order of characters is optimized for better gzip and brotli compression.
-// References to the same file (works both for gzip and brotli):
-// `'use`, `andom`, and `rict'`
-// References to the brotli default dictionary:
-// `-26T`, `1983`, `40px`, `75px`, `bush`, `jack`, `mind`, `very`, and `wolf`
-let urlAlphabet =
-  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
-
-let customAlphabet = (alphabet, defaultSize = 21) => {
-  return (size = defaultSize) => {
-    let id = ''
-    // A compact alternative for `for (var i = 0; i < step; i++)`.
-    let i = size | 0
-    while (i--) {
-      // `| 0` is more compact and faster than `Math.floor()`.
-      id += alphabet[(Math.random() * alphabet.length) | 0]
-    }
-    return id
-  }
-}
-
-let nanoid = (size = 21) => {
-  let id = ''
-  // A compact alternative for `for (var i = 0; i < step; i++)`.
-  let i = size | 0
-  while (i--) {
-    // `| 0` is more compact and faster than `Math.floor()`.
-    id += urlAlphabet[(Math.random() * 64) | 0]
-  }
-  return id
-}
-
-module.exports = { nanoid, customAlphabet }
-
-
-/***/ }),
-
-/***/ 94019:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+/***/ 13754:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
-// ESM COMPAT FLAG
-__nccwpck_require__.r(__webpack_exports__);
 
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ DoIUse)
-});
 
-// EXTERNAL MODULE: ./node_modules/multimatch/index.js
 var multimatch = __nccwpck_require__(17222);
-// EXTERNAL MODULE: ./node_modules/browserslist/index.js
 var browserslist = __nccwpck_require__(77913);
-// EXTERNAL MODULE: ./node_modules/caniuse-lite/dist/unpacker/index.js
-var unpacker = __nccwpck_require__(57560);
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/alternate-stylesheet.js
+var caniuse = __nccwpck_require__(57560);
+var postcss = __nccwpck_require__(11044);
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var multimatch__default = /*#__PURE__*/_interopDefaultLegacy(multimatch);
+var browserslist__default = /*#__PURE__*/_interopDefaultLegacy(browserslist);
+var caniuse__namespace = /*#__PURE__*/_interopNamespace(caniuse);
+
 /**
  * No description available.
  *
@@ -52321,9 +52296,8 @@ var unpacker = __nccwpck_require__(57560);
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const alternate_stylesheet = ({});
+var alternateStylesheet = {};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/background-attachment.js
 /**
  * Method of defining how a background image is attached to a scrollable element. Values include `scroll` (default), `fixed` and `local`.
  *
@@ -52333,14 +52307,13 @@ var unpacker = __nccwpck_require__(57560);
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const background_attachment = ({
+var backgroundAttachment = {
   'background-attachment': [
     'fixed',
     'local',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/background-clip-text.js
 /**
  * Non-standard method of clipping a background image to the foreground text.
  *
@@ -52350,25 +52323,22 @@ var unpacker = __nccwpck_require__(57560);
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const background_clip_text = ({
+var backgroundClipText = {
   'background-clip': 'text',
   '-webkit-background-clip': 'text',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/background-img-opts.js
-/* harmony default export */ const background_img_opts = ({
+var backgroundImgOpts = {
   'background-clip': true,
   'background-origin': true,
   'background-size': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/background-position-x-y.js
-/* harmony default export */ const background_position_x_y = ({
+var backgroundPositionXY = {
   'background-position-x': true,
   'background-position-y': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/background-repeat-round-space.js
 /**
  * Allows CSS background images to be repeated without clipping.
  *
@@ -52378,12 +52348,11 @@ var unpacker = __nccwpck_require__(57560);
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const background_repeat_round_space = ({
+var backgroundRepeatRoundSpace = {
   'background-repeat': ['round', 'space'],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/border-image.js
-/* harmony default export */ const border_image = ({
+var borderImage = {
   'border-image': true,
   'border-image-outset': true,
   'border-image-repeat': true,
@@ -52391,24 +52360,19 @@ var unpacker = __nccwpck_require__(57560);
   'border-image-source': true,
   'border-image-width': true,
 
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/border-radius.js
-/* harmony default export */ const border_radius = ({
+var borderRadius = {
   'border-radius': true,
   'border-top-left-radius': true,
   'border-top-right-radius': true,
   'border-bottom-right-radius': true,
   'border-bottom-left-radius': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/calc.js
-/* harmony default export */ const calc = ({
+var calc = {
   '': 'calc(',
-});
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/utils/util.js
-
+};
 
 /** @typedef {RegExp|string|((value:string) => boolean)} FeatureCheck */
 
@@ -52428,7 +52392,7 @@ function stripUrls(input) {
  * @return {string}
  */
 function formatBrowserName(browserKey, versions) {
-  const entry = unpacker.agents[browserKey];
+  const entry = caniuse.agents[browserKey];
   const browserName = entry ? entry.browser : null;
   if (!versions) {
     return browserName || '';
@@ -52497,23 +52461,18 @@ function checkCSSLengthUnits(...units) {
         : false));
 }
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/ch-unit.js
-
-
 /**
  * Unit representing the width of the character "0" in the current font, of particular use in combination with monospace fonts.
  * @see https://caniuse.com/ch-unit
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const ch_unit = (checkCSSLengthUnits('ch'));
+var chUnit = checkCSSLengthUnits('ch');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-all.js
-/* harmony default export */ const css_all = ({
+var cssAll = {
   'all': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-animation.js
-/* harmony default export */ const css_animation = ({
+var cssAnimation = {
   'animation': true,
   'animation-name': true,
   'animation-duration': true,
@@ -52523,91 +52482,41 @@ function checkCSSLengthUnits(...units) {
   'animation-play-state': true,
   'animation-delay': true,
   'animation-fill-mode': true,
-});
+};
 
 // @keyframes isn't checked for, but if you try to use it,
 // you'll still get a warning anyway because of the 'animation' property
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-any-link.js
+var cssAnyLink = checkSelector([':any-link', ':-webkit-any-link']);
 
-
-/* harmony default export */ const css_any_link = (checkSelector([':any-link', ':-webkit-any-link']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-appearance.js
-/* harmony default export */ const css_appearance = ({
+var cssAppearance = {
   'appearance': true,
   '-webkit-appearance': true,
   '-moz-appearance': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-at-counter-style.js
+var cssAtCounterStyle = checkAtRule('counter-style');
 
+var cssAutofill = checkSelector([':autofill', ':-webkit-autofill']);
 
-/* harmony default export */ const css_at_counter_style = (checkAtRule('counter-style'));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-autofill.js
-
-
-/* harmony default export */ const css_autofill = (checkSelector([':autofill', ':-webkit-autofill']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-backdrop-filter.js
-/* harmony default export */ const css_backdrop_filter = ({
+var cssBackdropFilter = {
   'backdrop-filter': true,
-});
-
-// EXTERNAL MODULE: ./node_modules/postcss/lib/postcss.js
-var lib_postcss = __nccwpck_require__(11044);
-;// CONCATENATED MODULE: ./node_modules/postcss/lib/postcss.mjs
-
-
-/* harmony default export */ const postcss_lib_postcss = ((/* unused pure expression or super */ null && (postcss)));
-
-const stringify = lib_postcss.stringify
-const fromJSON = lib_postcss.fromJSON
-const postcss_plugin = lib_postcss.plugin
-const parse = lib_postcss.parse
-const list = lib_postcss.list
-
-const postcss_document = lib_postcss.document
-const comment = lib_postcss.comment
-const atRule = lib_postcss.atRule
-const rule = lib_postcss.rule
-const decl = lib_postcss.decl
-const root = lib_postcss.root
-
-const CssSyntaxError = lib_postcss.CssSyntaxError
-const Declaration = lib_postcss.Declaration
-const Container = lib_postcss.Container
-const Processor = lib_postcss.Processor
-const Document = lib_postcss.Document
-const Comment = lib_postcss.Comment
-const Warning = lib_postcss.Warning
-const AtRule = lib_postcss.AtRule
-const Result = lib_postcss.Result
-const Input = lib_postcss.Input
-const Rule = lib_postcss.Rule
-const Root = lib_postcss.Root
-const Node = lib_postcss.Node
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-background-offsets.js
-
+};
 
 /**
  * @param {import('postcss').ChildNode} rule
  * @return {boolean}
  */
-/* harmony default export */ const css_background_offsets = ((rule) => {
+var cssBackgroundOffsets = (rule) => {
   if (rule.type !== 'decl') return false;
   if (rule.prop !== 'background-position') return false;
-  return list.space(rule.value).length > 2;
-});
+  return postcss.list.space(rule.value).length > 2;
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-backgroundblendmode.js
-/* harmony default export */ const css_backgroundblendmode = ({
+var cssBackgroundblendmode = {
   'background-blend-mode': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-boxdecorationbreak.js
 /**
  * Controls whether the box's margins, borders, padding, and other decorations wrap the broken edges of the box fragments (when the box is split by a break (page/column/region/line).
  *
@@ -52617,28 +52526,25 @@ const Node = lib_postcss.Node
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_boxdecorationbreak = ({
+var cssBoxdecorationbreak = {
   'box-decoration-break': true,
   '-webkit-box-decoration-break': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-boxshadow.js
-/* harmony default export */ const css_boxshadow = ({
+var cssBoxshadow = {
   'box-shadow': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-canvas.js
 /**
  * @param {import('postcss').ChildNode} rule
  * @return {boolean}
  */
-/* harmony default export */ const css_canvas = ((rule) => {
+var cssCanvas = (rule) => {
   if (rule.type !== 'decl') return false;
   if (!rule.prop.startsWith('background')) return false;
   return rule.value.startsWith('-webkit-canvas');
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-caret-color.js
 /**
  * The `caret-color` property allows the color to be set of the caret (blinking text insertion pointer) in an editable text area.
  *
@@ -52648,25 +52554,21 @@ const Node = lib_postcss.Node
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_caret_color = ({
+var cssCaretColor = {
   'caret-color': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-cascade-layers.js
 /**
  * The `@layer` at-rule allows authors to explicitly layer their styles in the cascade, before specificity and order of appearance are considered.
  *
  * See: https://caniuse.com/css-cascade-layers
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_cascade_layers = (checkAtRule('layer'));
+var cssCascadeLayers = checkAtRule('layer');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-case-insensitive.js
 /**
  * Including an `i` before the `]` in a CSS attribute selector causes the attribute value to be matched in an ASCII-case-insensitive manner. For example, `[b="xyz" i]` would match both `<a b="xyz">` and `<a b="XYZ">`.
  *
@@ -52676,18 +52578,16 @@ const Node = lib_postcss.Node
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_case_insensitive = ((rule) => {
+var cssCaseInsensitive = (rule) => {
   if (rule.type !== 'rule') { return false; }
   if (/\[.*i]/.test(rule.selector)) { return true; }
   return false;
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-clip-path.js
-/* harmony default export */ const css_clip_path = ({
+var cssClipPath = {
   'clip-path': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-color-adjust.js
 /**
  * The `print-color-adjust` (or `-webkit-print-color-adjust` as prefixed in WebKit/Blink browsers) property is a CSS extension that can be used to force printing of background colors and images.
  *
@@ -52697,12 +52597,11 @@ const Node = lib_postcss.Node
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_color_adjust = ({
+var cssColorAdjust = {
   'print-color-adjust': true,
   '-webkit-print-color-adjust': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-color-function.js
 /**
  * The CSS `color()` function allows the browser to display colors in any color space, such as the P3 color space which can display colors outside of the default sRGB color space.
  *
@@ -52712,56 +52611,45 @@ const Node = lib_postcss.Node
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_color_function = ({
+var cssColorFunction = {
   '': 'color(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-conic-gradients.js
-const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
+const REGEX$2 = /(^|[^-])(repeating-)?conic-gradient/;
 
-/* harmony default export */ const css_conic_gradients = ({
-  'background': REGEX,
-  'background-image': REGEX,
-  'border-image': REGEX,
-  'border-image-source': REGEX,
-  'content': REGEX,
-  'cursor': REGEX,
-  'list-style': REGEX,
-  'list-style-image': REGEX,
-});
+var cssConicGradients = {
+  'background': REGEX$2,
+  'background-image': REGEX$2,
+  'border-image': REGEX$2,
+  'border-image-source': REGEX$2,
+  'content': REGEX$2,
+  'cursor': REGEX$2,
+  'list-style': REGEX$2,
+  'list-style-image': REGEX$2,
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-container-queries.js
 /**
  * Size queries in Container Queries provide a way to query the size of a container, and conditionally apply CSS to the content of that container.
  *
  * See: https://caniuse.com/css-container-queries
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_container_queries = (checkAtRule('container'));
+var cssContainerQueries = checkAtRule('container');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-container-queries-style.js
+var cssContainerQueriesStyle = checkAtRule('container', 'style(');
 
-
-/* harmony default export */ const css_container_queries_style = (checkAtRule('container', 'style('));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-container-query-units.js
-
-
-/* harmony default export */ const css_container_query_units = (checkCSSLengthUnits(
+var cssContainerQueryUnits = checkCSSLengthUnits(
   'cqw',
   'cqh',
   'cqi',
   'cqb',
   'cqmin',
   'cqmax',
-));
+);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-containment.js
 /**
  * The CSS `contain` property lets developers limit the scope of the browser's styles, layout and paint work for faster and more efficient rendering.
  *
@@ -52771,11 +52659,10 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_containment = ({
+var cssContainment = {
   'contain': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-content-visibility.js
 /**
  * Provides control over when elements are rendered, so rendering can be skipped for elements not yet in the user's viewport.
  *
@@ -52785,18 +52672,16 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_content_visibility = ({
+var cssContentVisibility = {
   'content-visibility': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-counters.js
-/* harmony default export */ const css_counters = ({
+var cssCounters = {
   'counter-reset': true,
   'counter-increment': true,
   '': 'counter(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-crisp-edges.js
 /**
  * Scales images with an algorithm that preserves edges and contrast, without smoothing colors or introducing blur. This is intended for images such as pixel art. Official values that accomplish this for the `image-rendering` property are `crisp-edges` and `pixelated`.
  *
@@ -52806,11 +52691,10 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_crisp_edges = ({
+var cssCrispEdges = {
   'image-rendering': ['crisp-edges', 'pixelated'],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-cross-fade.js
 /**
  * Image function to create a "crossfade" between images. This allows one image to transition (fade) into another based on a percentage value.
  *
@@ -52820,70 +52704,57 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_cross_fade = ({
+var cssCrossFade = {
   '': [
     'cross-fade(',
     '-webkit-cross-fade(',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-default-pseudo.js
 /**
  * The `:default` pseudo-class matches checkboxes and radio buttons which are checked by default, `<option>`s with the `selected` attribute, and the default submit button (if any) of a form.
  *
  * See: https://caniuse.com/css-default-pseudo
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_default_pseudo = (checkSelector(':default'));
+var cssDefaultPseudo = checkSelector(':default');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-descendant-gtgt.js
 /**
  * An explicit, non-whitespace spelling of the descendant combinator. `A >> B` is equivalent to `A B`.
  *
  * See: https://caniuse.com/css-descendant-gtgt
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_descendant_gtgt = (checkSelector('>>'));
+var cssDescendantGtgt = checkSelector('>>');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-deviceadaptation.js
 /**
  * Method of overriding the size of viewport in web page using the `@viewport` rule, replacing Apple's own popular `<meta>` viewport implementation. Includes the `extend-to-zoom` width value.
  *
  * See: https://caniuse.com/css-deviceadaptation
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_deviceadaptation = (checkAtRule('viewport'));
+var cssDeviceadaptation = checkAtRule('viewport');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-dir-pseudo.js
 /**
  * Matches elements based on their directionality. `:dir(ltr)` matches elements which are Left-to-Right. `:dir(rtl)` matches elements which are Right-to-Left.
  *
  * See: https://caniuse.com/css-dir-pseudo
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_dir_pseudo = (checkSelector(':dir('));
+var cssDirPseudo = checkSelector(':dir(');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-display-contents.js
 /**
  * `display: contents` causes an element's children to appear as if they were direct children of the element's parent, ignoring the element itself. This can be useful when a wrapper element should be ignored when using CSS grid or similar layout techniques.
  *
@@ -52893,11 +52764,10 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_display_contents = ({
+var cssDisplayContents = {
   'display': 'contents',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-element-function.js
 /**
  * This function renders a live image generated from an arbitrary HTML element
  *
@@ -52907,16 +52777,14 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_element_function = ({
+var cssElementFunction = {
   '': 'element(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-env-function.js
-/* harmony default export */ const css_env_function = ({
+var cssEnvFunction = {
   '': 'env(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-exclusions.js
 /**
  * Exclusions defines how inline content flows around elements. It extends the content wrapping ability of floats to any block-level element.
  *
@@ -52926,31 +52794,24 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_exclusions = ({
+var cssExclusions = {
   'wrap-flow': true,
   '-ms-wrap-flow': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-featurequeries.js
+var cssFeaturequeries = checkAtRule(['supports']);
 
-
-/* harmony default export */ const css_featurequeries = (checkAtRule(['supports']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-file-selector-button.js
 /**
  * No description available.
  *
  * See: This feature comes from MDN: https://developer.mozilla.org/en-US/search?q=::file-selector-button+CSS+pseudo-element
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_file_selector_button = (checkSelector(':file-selector-button'));
+var cssFileSelectorButton = checkSelector(':file-selector-button');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-filter-function.js
 /**
  * This function filters a CSS input image with a set of filter functions (like blur, grayscale or hue)
  *
@@ -52960,85 +52821,67 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_filter_function = ({
+var cssFilterFunction = {
   '': 'filter(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-filters.js
-/* harmony default export */ const css_filters = ({
+var cssFilters = {
   'filter': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-first-letter.js
 /**
  * CSS pseudo-element that allows styling only the first "letter" of text within an element. Useful for implementing initial caps or drop caps styling.
  *
  * See: https://caniuse.com/css-first-letter
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_first_letter = (checkSelector(':first-letter'));
+var cssFirstLetter = checkSelector(':first-letter');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-first-line.js
 /**
  * Allows styling specifically for the first line of text using the `::first-line` pseudo-element. Note that only a limited set of properties can be applied.
  *
  * See: https://caniuse.com/css-first-line
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_first_line = (checkSelector(':first-line'));
+var cssFirstLine = checkSelector(':first-line');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-fixed.js
-/* harmony default export */ const css_fixed = ({
+var cssFixed = {
   'position': 'fixed',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-focus-visible.js
 /**
  * The `:focus-visible` pseudo-class applies while an element matches the `:focus` pseudo-class, and the UA determines via heuristics that the focus should be specially indicated on the element (typically via a “focus ring”).
  *
  * See: https://caniuse.com/css-focus-visible
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_focus_visible = (checkSelector(':focus-visible'));
+var cssFocusVisible = checkSelector(':focus-visible');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-focus-within.js
 /**
  * The `:focus-within` pseudo-class matches elements that either themselves match `:focus` or that have descendants which match `:focus`.
  *
  * See: https://caniuse.com/css-focus-within
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_focus_within = (checkSelector(':focus-within'));
+var cssFocusWithin = checkSelector(':focus-within');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-font-palette.js
-
-
-/* harmony default export */ const css_font_palette = ([
+var cssFontPalette = [
   (rule) => performFeatureCheck('font-palette', rule.name),
   checkAtRule('font-palette-values'),
-]);
+];
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-font-rendering-controls.js
 /**
  * `@font-face` descriptor `font-display` that allows control over how a downloadable font renders before it is fully loaded.
  *
@@ -53048,38 +52891,32 @@ const REGEX = /(^|[^-])(repeating-)?conic-gradient/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_font_rendering_controls = ({
+var cssFontRenderingControls = {
   'font-display': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-font-stretch.js
-/* harmony default export */ const css_font_stretch = ({
+var cssFontStretch = {
   'font-stretch': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-gencontent.js
+var cssGencontent = checkSelector([':before', ':after']);
 
+const REGEX$1 = /(^|[^-])((linear)|(radial))-gradient/;
 
-/* harmony default export */ const css_gencontent = (checkSelector([':before', ':after']));
+var cssGradients = {
+  'background': REGEX$1,
+  'background-image': REGEX$1,
+  'border-image': REGEX$1,
+  'border-image-source': REGEX$1,
+  'content': REGEX$1,
+  'cursor': REGEX$1,
+  'list-style': REGEX$1,
+  'list-style-image': REGEX$1,
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-gradients.js
-const css_gradients_REGEX = /(^|[^-])((linear)|(radial))-gradient/;
-
-/* harmony default export */ const css_gradients = ({
-  'background': css_gradients_REGEX,
-  'background-image': css_gradients_REGEX,
-  'border-image': css_gradients_REGEX,
-  'border-image-source': css_gradients_REGEX,
-  'content': css_gradients_REGEX,
-  'cursor': css_gradients_REGEX,
-  'list-style': css_gradients_REGEX,
-  'list-style-image': css_gradients_REGEX,
-});
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-grid.js
 /** @see https://drafts.csswg.org/css-grid/ */
 
-/* harmony default export */ const css_grid = ({
+var cssGrid = {
   'display': ['grid', 'inline-grid', '-ms-grid'],
   'grid': true,
   'grid-area': true,
@@ -53099,17 +52936,15 @@ const css_gradients_REGEX = /(^|[^-])((linear)|(radial))-gradient/;
   'grid-template-areas': true,
   'grid-template-columns': true,
   'grid-template-rows': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-grid-animation.js
-const css_grid_animation_REGEX = /grid/;
+const REGEX = /grid/;
 
-/* harmony default export */ const css_grid_animation = ({
-  'transition': css_grid_animation_REGEX,
-  'transition-property': css_grid_animation_REGEX,
-});
+var cssGridAnimation = {
+  'transition': REGEX,
+  'transition-property': REGEX,
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-hanging-punctuation.js
 /**
  * Allows some punctuation characters from start (or the end) of text elements to be placed "outside" of the box in order to preserve the reading flow.
  * @see https://caniuse.com/css-hanging-punctuation
@@ -53118,34 +52953,28 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_hanging_punctuation = ({
+var cssHangingPunctuation = {
   'hanging-punctuation': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-has.js
 /**
  * Select elements containing specific content. For example, `a:has(img)` selects all `<a>` elements that contain an `<img>` child.
  * @see https://caniuse.com/css-has
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_has = (checkSelector(':has'));
+var cssHas = checkSelector(':has');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-hyphens.js
-/* harmony default export */ const css_hyphens = ({
+var cssHyphens = {
   'hyphens': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-image-orientation.js
-/* harmony default export */ const css_image_orientation = ({
+var cssImageOrientation = {
   'image-orientation': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-image-set.js
 /**
  * Method of letting the browser pick the most appropriate CSS image from a given set.
  * @see https://caniuse.com/css-image-set
@@ -53154,40 +52983,33 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_image_set = ({
+var cssImageSet = {
   '': 'image-set(',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-in-out-of-range.js
 /**
  * If a temporal or number `<input>` has `max` and/or `min` attributes, then `:in-range` matches when the value is within the specified range and `:out-of-range` matches when the value is outside the specified range. If there are no range constraints, then neither pseudo-class matches.
  * @see https://caniuse.com/css-in-out-of-range
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_in_out_of_range = (checkSelector([
+var cssInOutOfRange = checkSelector([
   ':in-range',
   ':out-of-range',
-]));
+]);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-indeterminate-pseudo.js
 /**
  * The `:indeterminate` pseudo-class matches indeterminate checkboxes, indeterminate `<progress>` bars, and radio buttons with no checked button in their radio button group.
  * @see https://caniuse.com/css-indeterminate-pseudo
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_indeterminate_pseudo = (checkSelector(':indeterminate'));
+var cssIndeterminatePseudo = checkSelector(':indeterminate');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-initial-letter.js
 /**
  * Method of creating an enlarged cap, including a drop or raised cap, in a robust way.
  * @see https://caniuse.com/css-initial-letter
@@ -53196,16 +53018,14 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_initial_letter = ({
+var cssInitialLetter = {
   'initial-letter': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-initial-value.js
-/* harmony default export */ const css_initial_value = ({
+var cssInitialValue = {
   '': 'initial',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-lch-lab.js
 /**
  * The `lch()` and `lab()` color functions are based on the CIE LAB color space, representing colors in a way that closely matches human perception and provides access to a wider spectrum of colors than offered by the usual RGB color space.
  * @see https://caniuse.com/css-lch-lab
@@ -53214,14 +53034,13 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_lch_lab = ({
+var cssLchLab = {
   '': [
     'lch(',
     'lab(',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-letter-spacing.js
 /**
  * Controls spacing between characters of text (i.e. "tracking" in typographical terms). Not to be confused with kerning.
  * @see https://caniuse.com/css-letter-spacing
@@ -53230,11 +53049,10 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_letter_spacing = ({
+var cssLetterSpacing = {
   'letter-spacing': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-line-clamp.js
 /**
  * CSS property that will contain text to a given amount of lines when used in combination with `display: -webkit-box`. It will end with ellipsis when `text-overflow: ellipsis` is included.
  * @see https://caniuse.com/css-line-clamp
@@ -53243,13 +53061,12 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_line_clamp = ({
+var cssLineClamp = {
   'line-clamp': true,
   '-webkit-line-clamp': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-logical-props.js
-/* harmony default export */ const css_logical_props = ({
+var cssLogicalProps = {
   'block-size': true,
   'inline-size': true,
   'min-block-size': true,
@@ -53308,23 +53125,19 @@ const css_grid_animation_REGEX = /grid/;
   'resize': ['block', 'inline'],
   'overflow-block': true,
   'overflow-inline': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-marker-pseudo.js
 /**
  * The `::marker` pseudo-element allows list item markers to be styled or have their content value customized.
  * @see https://caniuse.com/css-marker-pseudo
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_marker_pseudo = (checkSelector(':marker'));
+var cssMarkerPseudo = checkSelector(':marker');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-masks.js
-/* harmony default export */ const css_masks = ({
+var cssMasks = {
   'clip-path': true,
   'mask': true,
   'mask-border': true,
@@ -53362,12 +53175,9 @@ const css_grid_animation_REGEX = /grid/;
   '-webkit-mask-repeat': true,
   '-webkit-mask-size': true,
   '-webkit-mask-type': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-matches-pseudo.js
-
-
-/* harmony default export */ const css_matches_pseudo = (checkSelector([
+var cssMatchesPseudo = checkSelector([
   ':is',
   ':where',
   ':matches',
@@ -53376,83 +53186,61 @@ const css_grid_animation_REGEX = /grid/;
   ':-webkit-is',
   ':-webkit-where',
   ':-webkit-matches',
-]));
+]);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-math-functions.js
-/* harmony default export */ const css_math_functions = ({
+var cssMathFunctions = {
   '': ['min(', 'max(', 'clamp('],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-media-interaction.js
 /**
  * Allows a media query to be set based on the presence and accuracy of the user's pointing device, and whether they have the ability to hover over elements on the page. This includes the `pointer`, `any-pointer`, `hover`, and `any-hover` media features.
  * @see https://caniuse.com/css-media-interaction
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_media_interaction = (checkAtRule('media', [
+var cssMediaInteraction = checkAtRule('media', [
   'pointer',
   'any-pointer',
   'hover',
   'any-hover',
-]));
+]);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-media-range-syntax.js
+var cssMediaRangeSyntax = checkAtRule('media', [' > ', ' < ', ' <= ', ' >= ']);
 
+var cssMediaResolution = checkAtRule('media', ['min-resolution', 'max-resolution', 'resolution', 'device-pixel-ratio']);
 
-/* harmony default export */ const css_media_range_syntax = (checkAtRule('media', [' > ', ' < ', ' <= ', ' >= ']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-media-resolution.js
-
-
-/* harmony default export */ const css_media_resolution = (checkAtRule('media', ['min-resolution', 'max-resolution', 'resolution', 'device-pixel-ratio']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-media-scripting.js
 /**
  * No description available.
  * @see This feature comes from MDN: https://developer.mozilla.org/en-US/search?q=Media+Queries:+scripting+media+feature
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_media_scripting = (checkAtRule('media', ['scripting']));
+var cssMediaScripting = checkAtRule('media', ['scripting']);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-mediaqueries.js
+var cssMediaqueries = checkAtRule(['media']);
 
-
-/* harmony default export */ const css_mediaqueries = (checkAtRule(['media']));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-mixblendmode.js
-/* harmony default export */ const css_mixblendmode = ({
+var cssMixblendmode = {
   'mix-blend-mode': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-motion-paths.js
-/* harmony default export */ const css_motion_paths = ({
+var cssMotionPaths = {
   'offset-path': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-namespaces.js
 /**
  * Using the `@namespace` at-rule, elements of other namespaces (e.g. SVG) can be targeted using the pipe (`|`) selector.
  * @see https://caniuse.com/css-namespaces
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_namespaces = (checkAtRule('namespace'));
+var cssNamespaces = checkAtRule('namespace');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-nesting.js
 /**
  * CSS nesting provides the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule. Similar behavior previously required a CSS pre-processor.
  * @see https://caniuse.com/css-nesting
@@ -53461,7 +53249,7 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_nesting = ((rule) => {
+var cssNesting = (rule) => {
   if (rule.type === 'rule' && rule.parent.type === 'rule') {
     return true;
   }
@@ -53471,57 +53259,46 @@ const css_grid_animation_REGEX = /grid/;
   }
 
   return false;
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-not-sel-list.js
 /**
  * Selectors Level 3 only allowed `:not()` pseudo-class to accept a single simple selector, which the element must not match any of. Thus, `:not(a, .b, [c])` or `:not(a.b[c])` did not work. Selectors Level 4 allows `:not()` to accept a list of selectors. Thus, `:not(a):not(.b):not([c])` can instead be written as `:not(a, .b, [c])` and `:not(a.b[c])` works as intended.
  * @see https://caniuse.com/css-not-sel-list
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_not_sel_list = (checkSelector(
+var cssNotSelList = checkSelector(
   (selector) => selector.includes(':not(') && !/:not\(\s*.?#?-?[\w[\]-]+\s*\)/.test(selector),
-));
+);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-nth-child-of.js
 /**
  * The newest versions of `:nth-child()` and `:nth-last-child()` accept an optional `of S` clause which filters the children to only those which match the selector list `S`. For example, `:nth-child(1 of .foo)` selects the first child among the children that have the `foo` class (ignoring any non-`foo` children which precede that child). Similar to `:nth-of-type`, but for arbitrary selectors instead of only type selectors.
  * @see https://caniuse.com/css-nth-child-of
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_nth_child_of = (checkSelector(
+var cssNthChildOf = checkSelector(
   (selector) => /:nth-(child|last-child)\(\s*\d+\s*of/.test(selector),
-));
+);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-opacity.js
-/* harmony default export */ const css_opacity = ({
+var cssOpacity = {
   'opacity': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-optional-pseudo.js
 /**
  * The `:optional` pseudo-class matches form inputs (`<input>`, `<textarea>`, `<select>`) which are not `:required`.
  * @see https://caniuse.com/css-optional-pseudo
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_optional_pseudo = (checkSelector(':optional'));
+var cssOptionalPseudo = checkSelector(':optional');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-overflow.js
 /**
  * Originally a single property for controlling overflowing content in both horizontal & vertical directions, the `overflow` property is now a shorthand for `overflow-x` & `overflow-y`. The latest version of the specification also introduces the `clip` value that blocks programmatic scrolling.
  * @see https://caniuse.com/css-overflow
@@ -53530,13 +53307,12 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_overflow = ({
+var cssOverflow = {
   'overflow': true,
   'overflow-x': true,
   'overflow-y': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-overflow-anchor.js
 /**
  * Changes in DOM elements above the visible region of a scrolling box can result in the page moving while the user is in the middle of consuming the content.  By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarring user experience by keeping track of the position of an anchor node and adjusting the scroll offset accordingly
  * @see https://caniuse.com/css-overflow-anchor
@@ -53545,23 +53321,20 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_overflow_anchor = ({
+var cssOverflowAnchor = {
   'overflow-anchor': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-overflow-overlay.js
-/* harmony default export */ const css_overflow_overlay = ({
+var cssOverflowOverlay = {
   'overflow': 'overlay',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-overscroll-behavior.js
-/* harmony default export */ const css_overscroll_behavior = ({
+var cssOverscrollBehavior = {
   'overscroll-behavior': true,
   'overscroll-behavior-x': true,
   'overscroll-behavior-y': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-page-break.js
 /**
  * Properties to control the way elements are broken across (printed) pages.
  * @see https://caniuse.com/css-page-break
@@ -53570,26 +53343,22 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_page_break = ({
+var cssPageBreak = {
   'page-break-after': true,
   'page-break-before': true,
   'page-break-inside': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-paged-media.js
 /**
  * CSS at-rule (`@page`) to define page-specific rules when printing web pages, such as margin per page and page dimensions.
  * @see https://caniuse.com/css-paged-media
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_paged_media = (checkAtRule('page'));
+var cssPagedMedia = checkAtRule('page');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-paint-api.js
 /**
  * Allows programmatic generation of images used by CSS
  * @see https://caniuse.com/css-paint-api
@@ -53598,49 +53367,38 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_paint_api = ({ '': 'paint(' });
+var cssPaintApi = { '': 'paint(' };
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-placeholder.js
-
-
-/* harmony default export */ const css_placeholder = ([
+var cssPlaceholder = [
   checkSelector(':placeholder'),
-]);
+];
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-placeholder-shown.js
 /**
  * :placeholder-shown CSS pseudo-class
  * Input elements can sometimes show placeholder text as a hint to the user on what to type in. See, for example, the placeholder attribute in HTML5. The :placeholder-shown pseudo-class matches an input element that is showing such placeholder text.
  * @see https://caniuse.com/css-placeholder-shown
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_placeholder_shown = (checkSelector(':placeholder-shown'));
+var cssPlaceholderShown = checkSelector(':placeholder-shown');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-print-color-adjust.js
-/* harmony default export */ const css_print_color_adjust = ({
+var cssPrintColorAdjust = {
   'print-color-adjust': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-read-only-write.js
 /**
  * CSS :read-only and :read-write selectors
  * :read-only and :read-write pseudo-classes to match elements which are considered user-alterable
  * @see https://caniuse.com/css-read-only-write
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_read_only_write = (checkSelector([':read-only', ':read-write']));
+var cssReadOnlyWrite = checkSelector([':read-only', ':read-write']);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-rebeccapurple.js
 /**
  * Rebeccapurple color
  * The new color added in CSS Color Module Level 4
@@ -53650,17 +53408,15 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_rebeccapurple = ({
+var cssRebeccapurple = {
   '': 'rebeccapurple',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-reflections.js
-/* harmony default export */ const css_reflections = ({
+var cssReflections = {
   'box-reflect': true,
   '-webkit-box-reflect': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-regions.js
 /**
  * CSS Regions
  * Method of flowing content into multiple elements, allowing magazine-like layouts. While once supported in WebKit-based browsers and Internet Explorer, implementing the feature is no longer being pursued by any browser.
@@ -53670,14 +53426,13 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_regions = ({
+var cssRegions = {
   'flow-into': true,
   'flow-from': true,
   '-webkit-flow-into': true,
   '-webkit-flow-from': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-relative-colors.js
 /**
  * CSS Relative colors
  * The CSS Relative Color syntax allows a color to be defined relative to another color using the `from` keyword and optionally `calc()` for any of the color values.
@@ -53687,30 +53442,26 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_relative_colors = ({
+var cssRelativeColors = {
   '': /((rgb)|(rgba)|(hsl)|(hsla)|(hwb))\(\s*from/,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-repeating-gradients.js
-/* harmony default export */ const css_repeating_gradients = ({
+var cssRepeatingGradients = {
   '': [
     'repeating-linear-gradient',
     'repeating-radial-gradient',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-resize.js
-/* harmony default export */ const css_resize = ({
+var cssResize = {
   'resize': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-revert-value.js
-/* harmony default export */ const css_revert_value = ({
+var cssRevertValue = {
   '': 'revert',
 
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-rrggbbaa.js
 /**
  * #rrggbbaa hex color notation
  * The CSS Color Module Level 4 defines new 4 & 8 character hex notation for color to include the opacity level.
@@ -53720,14 +53471,13 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_rrggbbaa = ({
+var cssRrggbbaa = {
   '': [
     /#[\da-f]{8}/i,
     /#[\da-f]{4}(\W|$)/i,
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-scroll-behavior.js
 /**
  * CSS Scroll-behavior
  * Method of specifying the scrolling behavior for a scrolling box, when scrolling happens due to navigation or CSSOM scrolling APIs.
@@ -53737,27 +53487,23 @@ const css_grid_animation_REGEX = /grid/;
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_scroll_behavior = ({
+var cssScrollBehavior = {
   'scroll-behavior': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-scrollbar.js
-/* harmony default export */ const css_scrollbar = ({
+var cssScrollbar = {
   'scrollbar-color': true,
   'scrollbar-width': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-sel2.js
-
-
-const ATTRIBUTE_IDENTIFIER = '[^\\~|^$*\\]]*';
+const ATTRIBUTE_IDENTIFIER$1 = '[^\\~|^$*\\]]*';
 
 // Export for testing
-const REGEXES = {
-  'HAS_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\]`),
-  'MATCH_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}=${ATTRIBUTE_IDENTIFIER}\\]`),
-  'WORD_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\~=${ATTRIBUTE_IDENTIFIER}\\]`),
-  'SUBCODE_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\|=${ATTRIBUTE_IDENTIFIER}\\]`),
+const REGEXES$1 = {
+  'HAS_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER$1}\\]`),
+  'MATCH_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER$1}=${ATTRIBUTE_IDENTIFIER$1}\\]`),
+  'WORD_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER$1}\\~=${ATTRIBUTE_IDENTIFIER$1}\\]`),
+  'SUBCODE_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER$1}\\|=${ATTRIBUTE_IDENTIFIER$1}\\]`),
   'BRACKET_PARENS': /(\[[^=\]]*(=("[^"]*")|[^\]]+|)])|(\([^)]*\))/g,
 };
 
@@ -53769,10 +53515,10 @@ function matchOutsideOfBrackets(pattern) {
   if (!(pattern instanceof RegExp)) {
     throw new TypeError('matchOutsideOfBrackets expects a RegExp');
   }
-  return (string) => pattern.test(string.replaceAll(REGEXES.BRACKET_PARENS, ''));
+  return (string) => pattern.test(string.replaceAll(REGEXES$1.BRACKET_PARENS, ''));
 }
 
-/* harmony default export */ const css_sel2 = (checkSelector([
+var cssSel2 = checkSelector([
   ':first-child',
   ':link',
   ':visited',
@@ -53780,31 +53526,28 @@ function matchOutsideOfBrackets(pattern) {
   ':hover',
   ':focus',
   ':lang',
-  REGEXES.HAS_ATTRIBUTE,
-  REGEXES.MATCH_ATTRIBUTE,
-  REGEXES.WORD_ATTRIBUTE,
-  REGEXES.SUBCODE_ATTRIBUTE,
+  REGEXES$1.HAS_ATTRIBUTE,
+  REGEXES$1.MATCH_ATTRIBUTE,
+  REGEXES$1.WORD_ATTRIBUTE,
+  REGEXES$1.SUBCODE_ATTRIBUTE,
   matchOutsideOfBrackets(/\*/),
   matchOutsideOfBrackets(/>/),
   matchOutsideOfBrackets(/\+/),
   matchOutsideOfBrackets(/\./),
   matchOutsideOfBrackets(/#/),
-]));
+]);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-sel3.js
-
-
-const css_sel3_ATTRIBUTE_IDENTIFIER = '[^\\~|^$*\\]]*';
+const ATTRIBUTE_IDENTIFIER = '[^\\~|^$*\\]]*';
 
 // Export for testing
-const css_sel3_REGEXES = {
+const REGEXES = {
   'SIBLING_SELECTOR': /^[^[]*~/,
-  'STARTSWITH_ATTRIBUTE': new RegExp(`\\[${css_sel3_ATTRIBUTE_IDENTIFIER}\\^=${css_sel3_ATTRIBUTE_IDENTIFIER}\\]`),
-  'ENDSWITH_ATTRIBUTE': new RegExp(`\\[${css_sel3_ATTRIBUTE_IDENTIFIER}\\$=${css_sel3_ATTRIBUTE_IDENTIFIER}\\]`),
-  'INSENSITIVE_ATTRIBUTE': new RegExp(`\\[${css_sel3_ATTRIBUTE_IDENTIFIER}\\*=${css_sel3_ATTRIBUTE_IDENTIFIER}\\]`),
+  'STARTSWITH_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\^=${ATTRIBUTE_IDENTIFIER}\\]`),
+  'ENDSWITH_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\$=${ATTRIBUTE_IDENTIFIER}\\]`),
+  'INSENSITIVE_ATTRIBUTE': new RegExp(`\\[${ATTRIBUTE_IDENTIFIER}\\*=${ATTRIBUTE_IDENTIFIER}\\]`),
 };
 
-/* harmony default export */ const css_sel3 = (checkSelector([
+var cssSel3 = checkSelector([
   ':root',
   ':nth-child',
   ':nth-last-child',
@@ -53821,25 +53564,20 @@ const css_sel3_REGEXES = {
   ':disabled',
   ':checked',
   ':not',
-  css_sel3_REGEXES.SIBLING_SELECTOR,
-  css_sel3_REGEXES.STARTSWITH_ATTRIBUTE,
-  css_sel3_REGEXES.ENDSWITH_ATTRIBUTE,
-  css_sel3_REGEXES.INSENSITIVE_ATTRIBUTE,
-]));
+  REGEXES.SIBLING_SELECTOR,
+  REGEXES.STARTSWITH_ATTRIBUTE,
+  REGEXES.ENDSWITH_ATTRIBUTE,
+  REGEXES.INSENSITIVE_ATTRIBUTE,
+]);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-selection.js
+var cssSelection = checkSelector(':selection');
 
-
-/* harmony default export */ const css_selection = (checkSelector(':selection'));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-shapes.js
-/* harmony default export */ const css_shapes = ({
+var cssShapes = {
   'shape-outside': true,
   'shape-image-threshold': true,
   'shape-margin': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-snappoints.js
 /**
  * CSS Scroll Snap
  * CSS technique that allows customizable scrolling experiences like pagination of carousels by setting defined snap positions.
@@ -53849,7 +53587,7 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_snappoints = ({
+var cssSnappoints = {
   'scroll-snap-type': true,
   'scroll-padding': true,
   'scroll-padding-top': true,
@@ -53875,14 +53613,12 @@ const css_sel3_REGEXES = {
   'scroll-margin-block-start': true,
   'scroll-margin-block-end': true,
   'scroll-snap-stop': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-sticky.js
-/* harmony default export */ const css_sticky = ({
+var cssSticky = {
   'position': 'sticky',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-subgrid.js
 /**
  * CSS Subgrid
  * Feature of the CSS Grid Layout Module Level 2 that allows a grid-item with its own grid to align in one or both dimensions with its parent grid.
@@ -53892,11 +53628,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_subgrid = ({
+var cssSubgrid = {
   '': 'subgrid',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-supports-api.js
 /**
  * CSS.supports() API
  * The CSS.supports() static methods returns a Boolean value indicating if the browser supports a given CSS feature, or not.
@@ -53906,20 +53641,18 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_supports_api = ({});
+var cssSupportsApi = {};
 
 /* this feature appears in JS, so it's not linted by this tool */
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-table.js
-/* harmony default export */ const css_table = ({
+var cssTable = {
   'display': [
     'table',
     'table-',
     'inline-table',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-align-last.js
 /**
  * CSS3 text-align-last
  * CSS property to describe how the last line of a block or a line right before a forced line break when `text-align` is `justify`.
@@ -53929,11 +53662,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_align_last = ({
+var cssTextAlignLast = {
   'text-align-last': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-box-trim.js
 /**
  * CSS text-box-trim & text-box-edge
  * Provides the ability to remove the vertical space appearing above and below text glyphs, allowing more precise positioning and alignment.    Previously specified as the `leading-trim` & `text-edge` properties.
@@ -53943,12 +53675,11 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_box_trim = ({
+var cssTextBoxTrim = {
   'text-box-trim': true,
   'text-box-edge': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-indent.js
 /**
  * CSS text-indent
  * The `text-indent` property applies indentation to lines of inline content in a block.
@@ -53958,11 +53689,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_indent = ({
+var cssTextIndent = {
   'text-indent': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-justify.js
 /**
  * CSS text-justify
  * CSS property to define how text should be justified when `text-align: justify` is set.
@@ -53972,11 +53702,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_justify = ({
+var cssTextJustify = {
   'text-justify': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-orientation.js
 /**
  * CSS text-orientation
  * The CSS `text-orientation` property specifies the orientation of text within a line. Current values only have an effect in vertical typographic modes (defined with the `writing-mode` property)
@@ -53986,11 +53715,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_orientation = ({
+var cssTextOrientation = {
   'text-orientation': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-text-spacing.js
 /**
  * CSS Text 4 text-spacing
  * No description available.
@@ -54000,30 +53728,26 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_text_spacing = ({
+var cssTextSpacing = {
   'text-spacing': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-textshadow.js
-/* harmony default export */ const css_textshadow = ({
+var cssTextshadow = {
   'text-shadow': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-touch-action.js
-/* harmony default export */ const css_touch_action = ({
+var cssTouchAction = {
   'touch-action': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-transitions.js
-/* harmony default export */ const css_transitions = ({
+var cssTransitions = {
   'transition': true,
   'transition-property': true,
   'transition-duration': true,
   'transition-delay': true,
   'transition-timing-function': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-unicode-bidi.js
 /**
  * CSS unicode-bidi property
  * No description available.
@@ -54033,40 +53757,34 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_unicode_bidi = ({
+var cssUnicodeBidi = {
   'unicode-bidi': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-unset-value.js
-/* harmony default export */ const css_unset_value = ({
+var cssUnsetValue = {
   '': 'unset',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-variables.js
 /**
  * @param {import('postcss').ChildNode} rule
  * @return {boolean}
  */
-/* harmony default export */ const css_variables = ((rule) => {
+var cssVariables = (rule) => {
   if (rule.type !== 'decl') return false;
   return (rule.prop.startsWith('--') || rule.value.includes('var('));
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-when-else.js
 /**
  * CSS @when / @else conditional rules
  * Syntax allowing CSS conditions (like media and support queries) to be written more simply, as well as making it possibly to write mutually exclusive rules using `@else` statements.
  * @see https://caniuse.com/css-when-else
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_when_else = (checkAtRule(['when', 'else']));
+var cssWhenElse = checkAtRule(['when', 'else']);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-widows-orphans.js
 /**
  * CSS widows & orphans
  * CSS properties to control when lines break across pages or columns by defining the amount of lines that must be left before or after the break.
@@ -54076,12 +53794,11 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_widows_orphans = ({
+var cssWidowsOrphans = {
   'widows': true,
   'orphans': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-width-stretch.js
 /**
  * width: stretch property
  * No description available.
@@ -54091,11 +53808,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_width_stretch = ({
+var cssWidthStretch = {
   'width': 'stretch',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-writing-mode.js
 /**
  * CSS writing-mode property
  * Property to define whether lines of text are laid out horizontally or vertically and the direction in which blocks progress.
@@ -54105,11 +53821,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_writing_mode = ({
+var cssWritingMode = {
   'writing-mode': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css-zoom.js
 /**
  * CSS zoom
  * Non-standard method of scaling content.
@@ -54119,11 +53834,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css_zoom = ({
+var cssZoom = {
   'zoom': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-attr.js
 /**
  * CSS3 attr() function for all properties
  * While `attr()` is supported for effectively all browsers for the `content` property, CSS Values and Units Level 5 adds the ability to use `attr()` on **any** CSS property, and to use it for non-string values (e.g. numbers, colors).
@@ -54133,31 +53847,28 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const css3_attr = ((rule) => {
+var css3Attr = (rule) => {
   if (rule.type !== 'decl') return false;
   if (rule.prop === 'content') {
     return false;
   }
 
   return rule.toString().includes('attr(');
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-boxsizing.js
-/* harmony default export */ const css3_boxsizing = ({
+var css3Boxsizing = {
   'box-sizing': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-colors.js
-/* harmony default export */ const css3_colors = ({
+var css3Colors = {
   '': [
     'rgba',
     'hsl',
     'hsla',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-cursors.js
-/* harmony default export */ const css3_cursors = ({
+var css3Cursors = {
   'cursor': [
     'none',
     'context-menu',
@@ -54173,24 +53884,20 @@ const css_sel3_REGEXES = {
     'row-resize',
     'all-scroll',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-cursors-grab.js
-/* harmony default export */ const css3_cursors_grab = ({
+var css3CursorsGrab = {
   'cursor': ['grab', 'grabbing'],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-cursors-newer.js
-/* harmony default export */ const css3_cursors_newer = ({
+var css3CursorsNewer = {
   'cursor': ['zoom-in', 'zoom-out'],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/css3-tabsize.js
-/* harmony default export */ const css3_tabsize = ({
+var css3Tabsize = {
   'tab-size': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/currentcolor.js
 /**
  * CSS currentColor value
  * A CSS value that will apply the existing `color` value to other properties like `background-color`, etc.
@@ -54200,11 +53907,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const currentcolor = ({
+var currentcolor = {
   '': 'currentColor',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/devicepixelratio.js
 /**
  * Window.devicePixelRatio
  * Read-only property that returns the ratio of the (vertical) size of one physical pixel on the current display device to the size of one CSS pixel.
@@ -54214,11 +53920,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const devicepixelratio = ({});
+var devicepixelratio = {};
 
 /* this feature is found in JS and is not linted by this tool  */
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/extended-system-fonts.js
 /**
  * ui-serif, ui-sans-serif, ui-monospace and ui-rounded values for font-family
  * Allows more control when choosing system interface fonts
@@ -54228,12 +53933,11 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const extended_system_fonts = ({
+var extendedSystemFonts = {
   'font-family': ['ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded'],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/flexbox.js
-/* harmony default export */ const flexbox = ({
+var flexbox = {
   'display': [
     'flex',
     'inline-flex',
@@ -54245,9 +53949,8 @@ const css_sel3_REGEXES = {
   'flex-direction': true,
   'flex-wrap': true,
   'flex-flow': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/flexbox-gap.js
 /**
  * gap property for Flexbox
  * `gap` for flexbox containers to create gaps/gutters between flex items
@@ -54257,7 +53960,7 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const flexbox_gap = ((rule) => {
+var flexboxGap = (rule) => {
   if (!('some' in rule) || !rule.nodes) return false;
 
   let hasFlexbox = false;
@@ -54271,9 +53974,8 @@ const css_sel3_REGEXES = {
 
     return hasFlexbox && hasGap;
   });
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/flow-root.js
 /**
  * display: flow-root
  * The element generates a block container box, and lays out its contents using flow layout. It always establishes a new block formatting context for its contents. It provides a better solution to the most use cases of the "clearfix" hack.
@@ -54283,11 +53985,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const flow_root = ({
+var flowRoot = {
   'display': 'flow-root',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-family-system-ui.js
 /**
  * system-ui value for font-family
  * Value for `font-family` that represents the default user interface font.
@@ -54297,19 +53998,17 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_family_system_ui = ({
+var fontFamilySystemUi = {
   'font-family': 'system-ui',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-feature.js
-/* harmony default export */ const font_feature = ({
+var fontFeature = {
   'font-feature-settings': true,
   'font-variant-ligatures': true,
   'font-language-override': true,
   'font-kerning': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-kerning.js
 /**
  * CSS3 font-kerning
  * Controls the usage of the kerning information (spacing between letters) stored in the font. Note that this only affects OpenType fonts with kerning information, it has no effect on other fonts.
@@ -54319,11 +54018,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_kerning = ({
+var fontKerning = {
   'font-kerning': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-loading.js
 /**
  * CSS Font Loading
  * This CSS module defines a scripting interface to font faces in CSS, allowing font faces to be easily created and loaded from script. It also provides methods to track the loading status of an individual font, or of all the fonts on an entire page.
@@ -54333,16 +54031,14 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_loading = ({});
+var fontLoading = {};
 
 /* this feature appears in JS and as such is not linted */
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-size-adjust.js
-/* harmony default export */ const font_size_adjust = ({
+var fontSizeAdjust = {
   'font-size-adjust': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-smooth.js
 /**
  * CSS font-smooth
  * Controls the application of anti-aliasing when fonts are rendered.
@@ -54352,16 +54048,14 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_smooth = ({
+var fontSmooth = {
   'font-smooth': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-unicode-range.js
-/* harmony default export */ const font_unicode_range = ({
+var fontUnicodeRange = {
   'unicode-range': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-variant-alternates.js
 /**
  * CSS font-variant-alternates
  * Controls the usage of alternate glyphs associated to alternative names defined in @font-feature-values for certain types of OpenType fonts.
@@ -54371,11 +54065,10 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_variant_alternates = ({
+var fontVariantAlternates = {
   'font-variant-alternates': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/font-variant-numeric.js
 /**
  * CSS font-variant-numeric
  * CSS property that provides different ways of displaying numbers, fractions, and ordinal markers.
@@ -54385,23 +54078,16 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const font_variant_numeric = ({
+var fontVariantNumeric = {
   'font-variant-numeric': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/fontface.js
-
-
-/* harmony default export */ const fontface = ([
+var fontface = [
   checkAtRule('font-face'),
-]);
+];
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/fullscreen.js
+var fullscreen = checkSelector(':fullscreen');
 
-
-/* harmony default export */ const fullscreen = (checkSelector(':fullscreen'));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/getcomputedstyle.js
 /**
  * getComputedStyle
  * API to get the current computed CSS styles applied to an element. This may be the current value applied by an animation or as set by a stylesheet.
@@ -54411,28 +54097,25 @@ const css_sel3_REGEXES = {
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const getcomputedstyle = ({});
+var getcomputedstyle = {};
 
 /* this is a js api, so we don't lint it */
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/inline-block.js
-/* harmony default export */ const inline_block = ({
+var inlineBlock = {
   'display': 'inline-block',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/intrinsic-width.js
 const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', 'stretch', 'fill'];
 
-/* harmony default export */ const intrinsic_width = ({
+var intrinsicWidth = {
   'width': VALUES,
   'min-width': VALUES,
   'max-width': VALUES,
   'height': VALUES,
   'min-height': VALUES,
   'max-height': VALUES,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/justify-content-space-evenly.js
 /**
  * CSS justify-content: space-evenly
  * The "space-evenly" value for the `justify-content` property distributes the space between items evenly. It is similar to space-around but provides equal instead of half-sized space on the edges. Can be used in both CSS flexbox & grid.
@@ -54442,73 +54125,60 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const justify_content_space_evenly = ({
+var justifyContentSpaceEvenly = {
   'justify-content': 'space-evenly',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/kerning-pairs-ligatures.js
-/* harmony default export */ const kerning_pairs_ligatures = ({
+var kerningPairsLigatures = {
   'text-rendering': 'optimizeLegibility',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-css-unicode-bidi-isolate.js
-/* harmony default export */ const mdn_css_unicode_bidi_isolate = ({
+var mdnCssUnicodeBidiIsolate = {
   'unicode-bidi': 'isolate',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-css-unicode-bidi-isolate-override.js
-/* harmony default export */ const mdn_css_unicode_bidi_isolate_override = ({
+var mdnCssUnicodeBidiIsolateOverride = {
   'unicode-bidi': 'isolate-override',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-css-unicode-bidi-plaintext.js
-/* harmony default export */ const mdn_css_unicode_bidi_plaintext = ({
+var mdnCssUnicodeBidiPlaintext = {
   'unicode-bidi': 'plaintext',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-text-decoration-color.js
-/* harmony default export */ const mdn_text_decoration_color = ({
+var mdnTextDecorationColor = {
   'text-decoration-color': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-text-decoration-line.js
-/* harmony default export */ const mdn_text_decoration_line = ({
+var mdnTextDecorationLine = {
   'text-decoration-line': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-text-decoration-shorthand.js
-/* harmony default export */ const mdn_text_decoration_shorthand = ({
+var mdnTextDecorationShorthand = {
   'text-decoration': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/mdn-text-decoration-style.js
-/* harmony default export */ const mdn_text_decoration_style = ({
+var mdnTextDecorationStyle = {
   'text-decoration-style': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/minmaxwh.js
-/* harmony default export */ const minmaxwh = ({
+var minmaxwh = {
   'min-width': true,
   'max-width': true,
   'min-height': true,
   'max-height': true,
-});
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/multibackgrounds.js
-
+};
 
 /**
  * @param {import('postcss').ChildNode} rule
  * @return {boolean}
  */
-/* harmony default export */ const multibackgrounds = ((rule) => {
+var multibackgrounds = (rule) => {
   if (rule.type !== 'decl') return false;
   if (!/^background-?/.test(rule.prop)) return false;
-  return list.comma(rule.value).length > 1;
-});
+  return postcss.list.comma(rule.value).length > 1;
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/multicolumn.js
-/* harmony default export */ const multicolumn = ({
+var multicolumn = {
   'columns': true,
   'column-width': true,
   'column-gap': true,
@@ -54522,47 +54192,39 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
   'break-before': true,
   'break-after': true,
   'break-inside': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/object-fit.js
-/* harmony default export */ const object_fit = ({
+var objectFit = {
   'object-fit': true,
   'object-position': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/outline.js
-/* harmony default export */ const outline = ({
+var outline = {
   'outline': true,
   'outline-style': true,
   'outline-width': true,
   'outline-color': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/pointer.js
-/* harmony default export */ const pointer = ({
+var pointer = {
   'touch-action': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/pointer-events.js
-/* harmony default export */ const pointer_events = ({
+var pointerEvents = {
   'pointer-events': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/prefers-color-scheme.js
 /**
  * prefers-color-scheme media query
  * Media query to detect if the user has set their system to use a light or dark color theme.
  * @see https://caniuse.com/prefers-color-scheme
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const prefers_color_scheme = (checkAtRule('media', 'prefers-color-scheme'));
+var prefersColorScheme = checkAtRule('media', 'prefers-color-scheme');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/prefers-reduced-motion.js
 /**
  * TODO: initially implement feature
  * prefers-reduced-motion media query
@@ -54570,19 +54232,13 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
  * @see https://caniuse.com/prefers-reduced-motion
  */
 
-
-
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const prefers_reduced_motion = (checkAtRule('media', 'prefers-reduced-motion'));
+var prefersReducedMotion = checkAtRule('media', 'prefers-reduced-motion');
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/rem.js
+var rem = checkCSSLengthUnits('rem');
 
-
-/* harmony default export */ const rem = (checkCSSLengthUnits('rem'));
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/run-in.js
 /**
  * display: run-in
  * If the run-in box contains a block box, same as block. If a block box follows the run-in box, the run-in box becomes the first inline box of the block box. If an inline box follows, the run-in box becomes a block box.
@@ -54592,11 +54248,10 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const run_in = ({
+var runIn = {
   'display': 'run-in',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/style-scoped.js
 /**
  * Scoped CSS
  * Allows CSS rules to be scoped to part of the document, based on the position of the style element. The attribute has been [removed from the current specification](https://github.com/whatwg/html/issues/552).
@@ -54606,11 +54261,10 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const style_scoped = ({});
+var styleScoped = {};
 
 /* this feature appears in HTML, so we don't lint it */
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/svg-css.js
 /**
  * SVG in CSS backgrounds
  * Method of using SVG images as CSS backgrounds
@@ -54620,7 +54274,7 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const svg_css = ((rule) => {
+var svgCss = (rule) => {
   if (rule.type !== 'decl') return false;
   if (/url\([\S\s]*svg/g.test(
     rule.toString(),
@@ -54629,10 +54283,9 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
   }
 
   return false;
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/text-decoration.js
-/* harmony default export */ const text_decoration = ({
+var textDecoration = {
   'text-decoration-style': true,
   'text-decoration-line': true,
   'text-decoration-color': true,
@@ -54640,9 +54293,8 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
   'text-decoration-thickness': true,
   'text-decoration-skip': true,
   'text-decoration-skip-ink': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/text-emphasis.js
 /**
  * text-emphasis styling
  * Method of using small symbols next to each glyph to emphasize a run of text, commonly used in East Asian languages. The `text-emphasis` shorthand, and its `text-emphasis-style` and `text-emphasis-color` longhands, can be used to apply marks to the text. The `text-emphasis-position` property, which inherits separately, allows setting the emphasis marks' position with respect to the text.
@@ -54652,24 +54304,21 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const text_emphasis = ({
+var textEmphasis = {
   'text-emphasis': true,
   'text-emphasis-style': true,
   'text-emphasis-color': true,
   'text-emphasis-position': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/text-overflow.js
-/* harmony default export */ const text_overflow = ({
+var textOverflow = {
   'text-overflow': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/text-size-adjust.js
-/* harmony default export */ const text_size_adjust = ({
+var textSizeAdjust = {
   'text-size-adjust': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/text-stroke.js
 /**
  * CSS text-stroke and text-fill
  * Method of declaring the outline (stroke) width and color for text.
@@ -54679,29 +54328,26 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const text_stroke = ({
+var textStroke = {
   'text-stroke-color': true,
   'text-stroke-width': true,
   'text-stroke': true,
   'text-fill-color': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/transforms2d.js
-/* harmony default export */ const transforms2d = ({
+var transforms2d = {
   'transform': true,
   'transform-origin': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/transforms3d.js
-/* harmony default export */ const transforms3d = ({
+var transforms3d = {
   'perspective': true,
   'perspective-origin': true,
   'transform-style': true,
   'backface-visibility': true,
   'transform': '3d',
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/ttf.js
 /**
  * TTF/OTF - TrueType and OpenType font support
  * Support for the TrueType (.ttf) and OpenType (.otf) outline font formats in @font-face.
@@ -54711,7 +54357,7 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const ttf = ((rule) => {
+var ttf = (rule) => {
   const ruleText = rule.toString();
 
   if (ruleText.includes('@font-face') && (
@@ -54721,14 +54367,12 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
   }
 
   return false;
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/user-select-none.js
-/* harmony default export */ const user_select_none = ({
+var userSelectNone = {
   'user-select': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/variable-fonts.js
 /**
  * Variable fonts
  * OpenType font settings that allows a single font file to behave like multiple fonts: it can contain all the allowed variations in width, weight, slant, optical size, or any other exposed axes of variation as defined by the font designer. Variations can be applied via the `font-variation-settings` property.
@@ -54738,12 +54382,9 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const variable_fonts = ({
+var variableFonts = {
   'font-variation-settings': true,
-});
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/viewport-unit-variants.js
-
+};
 
 /**
  * Small, Large, and Dynamic viewport units
@@ -54757,7 +54398,7 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
  * @see https://caniuse.com/viewport-unit-variants
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const viewport_unit_variants = (checkCSSLengthUnits(
+var viewportUnitVariants = checkCSSLengthUnits(
   /* sv* units */
   'svb',
   'svh',
@@ -54785,19 +54426,17 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
   /* vi/vb units */
   'vi',
   'vb',
-));
+);
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/viewport-units.js
-/* harmony default export */ const viewport_units = ({
+var viewportUnits = {
   '': [
     'vw',
     'vh',
     'vmin',
     'vmax',
   ],
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/webkit-user-drag.js
 /**
  * CSS -webkit-user-drag property
  * The non-standard `-webkit-user-drag` CSS property can be used to either make an element draggable or explicitly non-draggable (like links and images). See the standardized [draggable attribute/property](/mdn-api_htmlelement_draggable) for the recommended alternative method of accomplishing the same functionality.
@@ -54807,233 +54446,24 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 /**
  * @type {import('../features').Feature}
  */
-/* harmony default export */ const webkit_user_drag = ({
+var webkitUserDrag = {
   'webkit-user-drag': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/will-change.js
-/* harmony default export */ const will_change = ({
+var willChange = {
   'will-change': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/word-break.js
-/* harmony default export */ const word_break = ({
+var wordBreak = {
   'word-break': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features/wordwrap.js
-/* harmony default export */ const wordwrap = ({
+var wordwrap = {
   'overflow-wrap': true,
   'word-wrap': true,
-});
+};
 
-;// CONCATENATED MODULE: ./node_modules/doiuse/data/features.js
 /* THIS FILE IS AUTOGENERATED */
-/* eslint-disable import/order, canonical/filename-match-exported */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /** @typedef {RegExp|string|((value:string) => boolean)} FeatureCheck */
 
@@ -55043,221 +54473,210 @@ const VALUES = ['max-content', 'min-content', 'fit-content', 'fill-available', '
 
 /** @enum {Feature} */
 const FEATURES = {
-  'alternate-stylesheet': alternate_stylesheet,
-  'background-attachment': background_attachment,
-  'background-clip-text': background_clip_text,
-  'background-img-opts': background_img_opts,
-  'background-position-x-y': background_position_x_y,
-  'background-repeat-round-space': background_repeat_round_space,
-  'border-image': border_image,
-  'border-radius': border_radius,
+  'alternate-stylesheet': alternateStylesheet,
+  'background-attachment': backgroundAttachment,
+  'background-clip-text': backgroundClipText,
+  'background-img-opts': backgroundImgOpts,
+  'background-position-x-y': backgroundPositionXY,
+  'background-repeat-round-space': backgroundRepeatRoundSpace,
+  'border-image': borderImage,
+  'border-radius': borderRadius,
   'calc': calc,
-  'ch-unit': ch_unit,
-  'css-all': css_all,
-  'css-animation': css_animation,
-  'css-any-link': css_any_link,
-  'css-appearance': css_appearance,
-  'css-at-counter-style': css_at_counter_style,
-  'css-autofill': css_autofill,
-  'css-backdrop-filter': css_backdrop_filter,
-  'css-background-offsets': css_background_offsets,
-  'css-backgroundblendmode': css_backgroundblendmode,
-  'css-boxdecorationbreak': css_boxdecorationbreak,
-  'css-boxshadow': css_boxshadow,
-  'css-canvas': css_canvas,
-  'css-caret-color': css_caret_color,
-  'css-cascade-layers': css_cascade_layers,
-  'css-case-insensitive': css_case_insensitive,
-  'css-clip-path': css_clip_path,
-  'css-color-adjust': css_color_adjust,
-  'css-color-function': css_color_function,
-  'css-conic-gradients': css_conic_gradients,
-  'css-container-queries': css_container_queries,
-  'css-container-queries-style': css_container_queries_style,
-  'css-container-query-units': css_container_query_units,
-  'css-containment': css_containment,
-  'css-content-visibility': css_content_visibility,
-  'css-counters': css_counters,
-  'css-crisp-edges': css_crisp_edges,
-  'css-cross-fade': css_cross_fade,
-  'css-default-pseudo': css_default_pseudo,
-  'css-descendant-gtgt': css_descendant_gtgt,
-  'css-deviceadaptation': css_deviceadaptation,
-  'css-dir-pseudo': css_dir_pseudo,
-  'css-display-contents': css_display_contents,
-  'css-element-function': css_element_function,
-  'css-env-function': css_env_function,
-  'css-exclusions': css_exclusions,
-  'css-featurequeries': css_featurequeries,
-  'css-file-selector-button': css_file_selector_button,
-  'css-filter-function': css_filter_function,
-  'css-filters': css_filters,
-  'css-first-letter': css_first_letter,
-  'css-first-line': css_first_line,
-  'css-fixed': css_fixed,
-  'css-focus-visible': css_focus_visible,
-  'css-focus-within': css_focus_within,
-  'css-font-palette': css_font_palette,
-  'css-font-rendering-controls': css_font_rendering_controls,
-  'css-font-stretch': css_font_stretch,
-  'css-gencontent': css_gencontent,
-  'css-gradients': css_gradients,
-  'css-grid': css_grid,
-  'css-grid-animation': css_grid_animation,
-  'css-hanging-punctuation': css_hanging_punctuation,
-  'css-has': css_has,
-  'css-hyphens': css_hyphens,
-  'css-image-orientation': css_image_orientation,
-  'css-image-set': css_image_set,
-  'css-in-out-of-range': css_in_out_of_range,
-  'css-indeterminate-pseudo': css_indeterminate_pseudo,
-  'css-initial-letter': css_initial_letter,
-  'css-initial-value': css_initial_value,
-  'css-lch-lab': css_lch_lab,
-  'css-letter-spacing': css_letter_spacing,
-  'css-line-clamp': css_line_clamp,
-  'css-logical-props': css_logical_props,
-  'css-marker-pseudo': css_marker_pseudo,
-  'css-masks': css_masks,
-  'css-matches-pseudo': css_matches_pseudo,
-  'css-math-functions': css_math_functions,
-  'css-media-interaction': css_media_interaction,
-  'css-media-range-syntax': css_media_range_syntax,
-  'css-media-resolution': css_media_resolution,
-  'css-media-scripting': css_media_scripting,
-  'css-mediaqueries': css_mediaqueries,
-  'css-mixblendmode': css_mixblendmode,
-  'css-motion-paths': css_motion_paths,
-  'css-namespaces': css_namespaces,
-  'css-nesting': css_nesting,
-  'css-not-sel-list': css_not_sel_list,
-  'css-nth-child-of': css_nth_child_of,
-  'css-opacity': css_opacity,
-  'css-optional-pseudo': css_optional_pseudo,
-  'css-overflow': css_overflow,
-  'css-overflow-anchor': css_overflow_anchor,
-  'css-overflow-overlay': css_overflow_overlay,
-  'css-overscroll-behavior': css_overscroll_behavior,
-  'css-page-break': css_page_break,
-  'css-paged-media': css_paged_media,
-  'css-paint-api': css_paint_api,
-  'css-placeholder': css_placeholder,
-  'css-placeholder-shown': css_placeholder_shown,
-  'css-print-color-adjust': css_print_color_adjust,
-  'css-read-only-write': css_read_only_write,
-  'css-rebeccapurple': css_rebeccapurple,
-  'css-reflections': css_reflections,
-  'css-regions': css_regions,
-  'css-relative-colors': css_relative_colors,
-  'css-repeating-gradients': css_repeating_gradients,
-  'css-resize': css_resize,
-  'css-revert-value': css_revert_value,
-  'css-rrggbbaa': css_rrggbbaa,
-  'css-scroll-behavior': css_scroll_behavior,
-  'css-scrollbar': css_scrollbar,
-  'css-sel2': css_sel2,
-  'css-sel3': css_sel3,
-  'css-selection': css_selection,
-  'css-shapes': css_shapes,
-  'css-snappoints': css_snappoints,
-  'css-sticky': css_sticky,
-  'css-subgrid': css_subgrid,
-  'css-supports-api': css_supports_api,
-  'css-table': css_table,
-  'css-text-align-last': css_text_align_last,
-  'css-text-box-trim': css_text_box_trim,
-  'css-text-indent': css_text_indent,
-  'css-text-justify': css_text_justify,
-  'css-text-orientation': css_text_orientation,
-  'css-text-spacing': css_text_spacing,
-  'css-textshadow': css_textshadow,
-  'css-touch-action': css_touch_action,
-  'css-transitions': css_transitions,
-  'css-unicode-bidi': css_unicode_bidi,
-  'css-unset-value': css_unset_value,
-  'css-variables': css_variables,
-  'css-when-else': css_when_else,
-  'css-widows-orphans': css_widows_orphans,
-  'css-width-stretch': css_width_stretch,
-  'css-writing-mode': css_writing_mode,
-  'css-zoom': css_zoom,
-  'css3-attr': css3_attr,
-  'css3-boxsizing': css3_boxsizing,
-  'css3-colors': css3_colors,
-  'css3-cursors': css3_cursors,
-  'css3-cursors-grab': css3_cursors_grab,
-  'css3-cursors-newer': css3_cursors_newer,
-  'css3-tabsize': css3_tabsize,
+  'ch-unit': chUnit,
+  'css-all': cssAll,
+  'css-animation': cssAnimation,
+  'css-any-link': cssAnyLink,
+  'css-appearance': cssAppearance,
+  'css-at-counter-style': cssAtCounterStyle,
+  'css-autofill': cssAutofill,
+  'css-backdrop-filter': cssBackdropFilter,
+  'css-background-offsets': cssBackgroundOffsets,
+  'css-backgroundblendmode': cssBackgroundblendmode,
+  'css-boxdecorationbreak': cssBoxdecorationbreak,
+  'css-boxshadow': cssBoxshadow,
+  'css-canvas': cssCanvas,
+  'css-caret-color': cssCaretColor,
+  'css-cascade-layers': cssCascadeLayers,
+  'css-case-insensitive': cssCaseInsensitive,
+  'css-clip-path': cssClipPath,
+  'css-color-adjust': cssColorAdjust,
+  'css-color-function': cssColorFunction,
+  'css-conic-gradients': cssConicGradients,
+  'css-container-queries': cssContainerQueries,
+  'css-container-queries-style': cssContainerQueriesStyle,
+  'css-container-query-units': cssContainerQueryUnits,
+  'css-containment': cssContainment,
+  'css-content-visibility': cssContentVisibility,
+  'css-counters': cssCounters,
+  'css-crisp-edges': cssCrispEdges,
+  'css-cross-fade': cssCrossFade,
+  'css-default-pseudo': cssDefaultPseudo,
+  'css-descendant-gtgt': cssDescendantGtgt,
+  'css-deviceadaptation': cssDeviceadaptation,
+  'css-dir-pseudo': cssDirPseudo,
+  'css-display-contents': cssDisplayContents,
+  'css-element-function': cssElementFunction,
+  'css-env-function': cssEnvFunction,
+  'css-exclusions': cssExclusions,
+  'css-featurequeries': cssFeaturequeries,
+  'css-file-selector-button': cssFileSelectorButton,
+  'css-filter-function': cssFilterFunction,
+  'css-filters': cssFilters,
+  'css-first-letter': cssFirstLetter,
+  'css-first-line': cssFirstLine,
+  'css-fixed': cssFixed,
+  'css-focus-visible': cssFocusVisible,
+  'css-focus-within': cssFocusWithin,
+  'css-font-palette': cssFontPalette,
+  'css-font-rendering-controls': cssFontRenderingControls,
+  'css-font-stretch': cssFontStretch,
+  'css-gencontent': cssGencontent,
+  'css-gradients': cssGradients,
+  'css-grid': cssGrid,
+  'css-grid-animation': cssGridAnimation,
+  'css-hanging-punctuation': cssHangingPunctuation,
+  'css-has': cssHas,
+  'css-hyphens': cssHyphens,
+  'css-image-orientation': cssImageOrientation,
+  'css-image-set': cssImageSet,
+  'css-in-out-of-range': cssInOutOfRange,
+  'css-indeterminate-pseudo': cssIndeterminatePseudo,
+  'css-initial-letter': cssInitialLetter,
+  'css-initial-value': cssInitialValue,
+  'css-lch-lab': cssLchLab,
+  'css-letter-spacing': cssLetterSpacing,
+  'css-line-clamp': cssLineClamp,
+  'css-logical-props': cssLogicalProps,
+  'css-marker-pseudo': cssMarkerPseudo,
+  'css-masks': cssMasks,
+  'css-matches-pseudo': cssMatchesPseudo,
+  'css-math-functions': cssMathFunctions,
+  'css-media-interaction': cssMediaInteraction,
+  'css-media-range-syntax': cssMediaRangeSyntax,
+  'css-media-resolution': cssMediaResolution,
+  'css-media-scripting': cssMediaScripting,
+  'css-mediaqueries': cssMediaqueries,
+  'css-mixblendmode': cssMixblendmode,
+  'css-motion-paths': cssMotionPaths,
+  'css-namespaces': cssNamespaces,
+  'css-nesting': cssNesting,
+  'css-not-sel-list': cssNotSelList,
+  'css-nth-child-of': cssNthChildOf,
+  'css-opacity': cssOpacity,
+  'css-optional-pseudo': cssOptionalPseudo,
+  'css-overflow': cssOverflow,
+  'css-overflow-anchor': cssOverflowAnchor,
+  'css-overflow-overlay': cssOverflowOverlay,
+  'css-overscroll-behavior': cssOverscrollBehavior,
+  'css-page-break': cssPageBreak,
+  'css-paged-media': cssPagedMedia,
+  'css-paint-api': cssPaintApi,
+  'css-placeholder': cssPlaceholder,
+  'css-placeholder-shown': cssPlaceholderShown,
+  'css-print-color-adjust': cssPrintColorAdjust,
+  'css-read-only-write': cssReadOnlyWrite,
+  'css-rebeccapurple': cssRebeccapurple,
+  'css-reflections': cssReflections,
+  'css-regions': cssRegions,
+  'css-relative-colors': cssRelativeColors,
+  'css-repeating-gradients': cssRepeatingGradients,
+  'css-resize': cssResize,
+  'css-revert-value': cssRevertValue,
+  'css-rrggbbaa': cssRrggbbaa,
+  'css-scroll-behavior': cssScrollBehavior,
+  'css-scrollbar': cssScrollbar,
+  'css-sel2': cssSel2,
+  'css-sel3': cssSel3,
+  'css-selection': cssSelection,
+  'css-shapes': cssShapes,
+  'css-snappoints': cssSnappoints,
+  'css-sticky': cssSticky,
+  'css-subgrid': cssSubgrid,
+  'css-supports-api': cssSupportsApi,
+  'css-table': cssTable,
+  'css-text-align-last': cssTextAlignLast,
+  'css-text-box-trim': cssTextBoxTrim,
+  'css-text-indent': cssTextIndent,
+  'css-text-justify': cssTextJustify,
+  'css-text-orientation': cssTextOrientation,
+  'css-text-spacing': cssTextSpacing,
+  'css-textshadow': cssTextshadow,
+  'css-touch-action': cssTouchAction,
+  'css-transitions': cssTransitions,
+  'css-unicode-bidi': cssUnicodeBidi,
+  'css-unset-value': cssUnsetValue,
+  'css-variables': cssVariables,
+  'css-when-else': cssWhenElse,
+  'css-widows-orphans': cssWidowsOrphans,
+  'css-width-stretch': cssWidthStretch,
+  'css-writing-mode': cssWritingMode,
+  'css-zoom': cssZoom,
+  'css3-attr': css3Attr,
+  'css3-boxsizing': css3Boxsizing,
+  'css3-colors': css3Colors,
+  'css3-cursors': css3Cursors,
+  'css3-cursors-grab': css3CursorsGrab,
+  'css3-cursors-newer': css3CursorsNewer,
+  'css3-tabsize': css3Tabsize,
   'currentcolor': currentcolor,
   'devicepixelratio': devicepixelratio,
-  'extended-system-fonts': extended_system_fonts,
+  'extended-system-fonts': extendedSystemFonts,
   'flexbox': flexbox,
-  'flexbox-gap': flexbox_gap,
-  'flow-root': flow_root,
-  'font-family-system-ui': font_family_system_ui,
-  'font-feature': font_feature,
-  'font-kerning': font_kerning,
-  'font-loading': font_loading,
-  'font-size-adjust': font_size_adjust,
-  'font-smooth': font_smooth,
-  'font-unicode-range': font_unicode_range,
-  'font-variant-alternates': font_variant_alternates,
-  'font-variant-numeric': font_variant_numeric,
+  'flexbox-gap': flexboxGap,
+  'flow-root': flowRoot,
+  'font-family-system-ui': fontFamilySystemUi,
+  'font-feature': fontFeature,
+  'font-kerning': fontKerning,
+  'font-loading': fontLoading,
+  'font-size-adjust': fontSizeAdjust,
+  'font-smooth': fontSmooth,
+  'font-unicode-range': fontUnicodeRange,
+  'font-variant-alternates': fontVariantAlternates,
+  'font-variant-numeric': fontVariantNumeric,
   'fontface': fontface,
   'fullscreen': fullscreen,
   'getcomputedstyle': getcomputedstyle,
-  'inline-block': inline_block,
-  'intrinsic-width': intrinsic_width,
-  'justify-content-space-evenly': justify_content_space_evenly,
-  'kerning-pairs-ligatures': kerning_pairs_ligatures,
-  'mdn-css-unicode-bidi-isolate': mdn_css_unicode_bidi_isolate,
-  'mdn-css-unicode-bidi-isolate-override': mdn_css_unicode_bidi_isolate_override,
-  'mdn-css-unicode-bidi-plaintext': mdn_css_unicode_bidi_plaintext,
-  'mdn-text-decoration-color': mdn_text_decoration_color,
-  'mdn-text-decoration-line': mdn_text_decoration_line,
-  'mdn-text-decoration-shorthand': mdn_text_decoration_shorthand,
-  'mdn-text-decoration-style': mdn_text_decoration_style,
+  'inline-block': inlineBlock,
+  'intrinsic-width': intrinsicWidth,
+  'justify-content-space-evenly': justifyContentSpaceEvenly,
+  'kerning-pairs-ligatures': kerningPairsLigatures,
+  'mdn-css-unicode-bidi-isolate': mdnCssUnicodeBidiIsolate,
+  'mdn-css-unicode-bidi-isolate-override': mdnCssUnicodeBidiIsolateOverride,
+  'mdn-css-unicode-bidi-plaintext': mdnCssUnicodeBidiPlaintext,
+  'mdn-text-decoration-color': mdnTextDecorationColor,
+  'mdn-text-decoration-line': mdnTextDecorationLine,
+  'mdn-text-decoration-shorthand': mdnTextDecorationShorthand,
+  'mdn-text-decoration-style': mdnTextDecorationStyle,
   'minmaxwh': minmaxwh,
   'multibackgrounds': multibackgrounds,
   'multicolumn': multicolumn,
-  'object-fit': object_fit,
+  'object-fit': objectFit,
   'outline': outline,
   'pointer': pointer,
-  'pointer-events': pointer_events,
-  'prefers-color-scheme': prefers_color_scheme,
-  'prefers-reduced-motion': prefers_reduced_motion,
+  'pointer-events': pointerEvents,
+  'prefers-color-scheme': prefersColorScheme,
+  'prefers-reduced-motion': prefersReducedMotion,
   'rem': rem,
-  'run-in': run_in,
-  'style-scoped': style_scoped,
-  'svg-css': svg_css,
-  'text-decoration': text_decoration,
-  'text-emphasis': text_emphasis,
-  'text-overflow': text_overflow,
-  'text-size-adjust': text_size_adjust,
-  'text-stroke': text_stroke,
+  'run-in': runIn,
+  'style-scoped': styleScoped,
+  'svg-css': svgCss,
+  'text-decoration': textDecoration,
+  'text-emphasis': textEmphasis,
+  'text-overflow': textOverflow,
+  'text-size-adjust': textSizeAdjust,
+  'text-stroke': textStroke,
   'transforms2d': transforms2d,
   'transforms3d': transforms3d,
   'ttf': ttf,
-  'user-select-none': user_select_none,
-  'variable-fonts': variable_fonts,
-  'viewport-unit-variants': viewport_unit_variants,
-  'viewport-units': viewport_units,
-  'webkit-user-drag': webkit_user_drag,
-  'will-change': will_change,
-  'word-break': word_break,
+  'user-select-none': userSelectNone,
+  'variable-fonts': variableFonts,
+  'viewport-unit-variants': viewportUnitVariants,
+  'viewport-units': viewportUnits,
+  'webkit-user-drag': webkitUserDrag,
+  'will-change': willChange,
+  'word-break': wordBreak,
   'wordwrap': wordwrap,
 };
-
-/** @typedef {keyof typeof FEATURES} FeatureKeys */
-
-/* harmony default export */ const features = (/** @type {{[K in FeatureKeys]: Feature}} */FEATURES);
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/lib/BrowserSelection.js
-
-
-
-
-
 
 /**
  * @template T
@@ -55294,7 +54713,7 @@ class BrowserSelection {
   constructor(query, from) {
     this.browsersRequest = query;
     const options = from ? { path: from } : {};
-    this.#list = browserslist(this.browsersRequest, options).map((browser) => browser.split(' '));
+    this.#list = browserslist__default["default"](this.browsersRequest, options).map((browser) => browser.split(' '));
   }
 
   /**
@@ -55397,11 +54816,11 @@ class BrowserSelection {
     /** @type {Partial<Record<keyof FEATURES, MissingSupportResultStats>>} */
     const result = {};
 
-    for (const key of Object.keys(features)) {
+    for (const key of Object.keys(FEATURES)) {
       const feature = /** @type {keyof FEATURES} */ (key);
-      const packedFeature = unpacker.features[feature];
+      const packedFeature = caniuse__namespace.features[feature];
       if (!packedFeature) continue; // Ignore removed features
-      const featureData = unpacker.feature(packedFeature);
+      const featureData = caniuse__namespace.feature(packedFeature);
       const lackData = this.filterStats(featureData.stats);
       const missingData = lackData.missing;
       const partialData = lackData.partial;
@@ -55448,10 +54867,6 @@ class BrowserSelection {
     return result;
   }
 }
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/lib/Detector.js
-
-
 
 /** @typedef {import('../data/features.js').FeatureKeys} FeatureKeys */
 /** @typedef {import('../data/features.js').RuleCheck} RuleCheck */
@@ -55528,7 +54943,7 @@ class Detector {
     /** @type {Map<FeatureKeys, RuleCheck>} */
     this.features = new Map();
     for (const featureName of featureList) {
-      const feature = features[featureName];
+      const feature = FEATURES[featureName];
       if (feature != null) {
         this.features.set(featureName, normaliseFeature(feature));
       }
@@ -55572,7 +54987,6 @@ class Detector {
         }
         break;
       }
-      default:
     }
   }
 
@@ -55613,12 +55027,6 @@ class Detector {
     this.node(node, callback);
   }
 }
-
-;// CONCATENATED MODULE: ./node_modules/doiuse/lib/DoIUse.js
-
-
-
-
 
 /** @typedef {import('../data/features.js').FeatureKeys} FeatureKeys */
 
@@ -55697,7 +55105,7 @@ class DoIUse {
       if (!usage.source) {
         throw new Error('No source?');
       }
-      if (this.ignoreFiles && multimatch(usage.source.input.from, this.ignoreFiles).length > 0) {
+      if (this.ignoreFiles && multimatch__default["default"](usage.source.input.from, this.ignoreFiles).length > 0) {
         return;
       }
 
@@ -55745,6 +55153,57 @@ class DoIUse {
     });
   }
 }
+
+/**
+ * @param  {ConstructorParameters<typeof DoIUse>} options
+ * @return {DoIUse}
+ */
+function index(...options) {
+  return new DoIUse(...options);
+}
+
+module.exports = index;
+
+
+/***/ }),
+
+/***/ 4910:
+/***/ ((module) => {
+
+// This alphabet uses `A-Za-z0-9_-` symbols.
+// The order of characters is optimized for better gzip and brotli compression.
+// References to the same file (works both for gzip and brotli):
+// `'use`, `andom`, and `rict'`
+// References to the brotli default dictionary:
+// `-26T`, `1983`, `40px`, `75px`, `bush`, `jack`, `mind`, `very`, and `wolf`
+let urlAlphabet =
+  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
+
+let customAlphabet = (alphabet, defaultSize = 21) => {
+  return (size = defaultSize) => {
+    let id = ''
+    // A compact alternative for `for (var i = 0; i < step; i++)`.
+    let i = size | 0
+    while (i--) {
+      // `| 0` is more compact and faster than `Math.floor()`.
+      id += alphabet[(Math.random() * alphabet.length) | 0]
+    }
+    return id
+  }
+}
+
+let nanoid = (size = 21) => {
+  let id = ''
+  // A compact alternative for `for (var i = 0; i < step; i++)`.
+  let i = size | 0
+  while (i--) {
+    // `| 0` is more compact and faster than `Math.floor()`.
+    id += urlAlphabet[(Math.random() * 64) | 0]
+  }
+  return id
+}
+
+module.exports = { nanoid, customAlphabet }
 
 
 /***/ }),
@@ -55798,32 +55257,9 @@ module.exports = /*#__PURE__*/JSON.parse('{"v0.8":{"start":"2012-06-25","end":"2
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/compat */
@@ -55835,9 +55271,9 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(37484);
 const fs = __nccwpck_require__(79896);
 const path = __nccwpck_require__(16928);
-const doiuse = __nccwpck_require__(94019);
-const index_postcss = __nccwpck_require__(11044);
+const doiuse = __nccwpck_require__(13754);
 const { glob } = __nccwpck_require__(21363);
+const postcss = __nccwpck_require__(11044); // <-- CHANGE: Import postcss
 
 // Inline toDate function
 function toDate(dateString) {
@@ -55848,8 +55284,6 @@ let features;
 try {
     const dataPath = __nccwpck_require__.ab + "data.json";
     features = JSON.parse(fs.readFileSync(__nccwpck_require__.ab + "data.json", 'utf-8'));
-    core.debug('Loaded web-features keys: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
-    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]] || {}, null, 2));
 } catch (error) {
     core.setFailed(`Failed to load web-features: ${error.message}`);
     process.exit(1);
@@ -55884,6 +55318,7 @@ function generateReport(violations, targetBaseline) {
             <tr>
                 <th>File</th>
                 <th>Line</th>
+                <th>Column</th>
                 <th>Feature</th>
                 <th>Reason</th>
                 <th>MDN Link</th>
@@ -55891,11 +55326,12 @@ function generateReport(violations, targetBaseline) {
         `;
         violations.forEach(v => {
             const featureData = features[v.feature] || {};
-            const mdnLink = featureData.mdn_url || `https://developer.mozilla.org/en-US/docs/Web/${v.feature.includes('css') ? 'CSS' : 'API'}/${v.feature.replace(/-/g, '_')}`;
+            const mdnLink = featureData.mdn_url || `https://developer.mozilla.org/en-US/search?q=${v.feature}`;
             report += `
             <tr>
                 <td>${v.file}</td>
                 <td>${v.line}</td>
+                <td>${v.column}</td>
                 <td>${v.feature}</td>
                 <td>${v.reason}</td>
                 <td><a href="${mdnLink}" target="_blank">MDN</a></td>
@@ -55913,8 +55349,6 @@ function generateReport(violations, targetBaseline) {
 
 function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
-    const allFeatures = Object.values(features);
-
     const lowerTarget = target.toLowerCase();
 
     // Validate target-baseline
@@ -55922,11 +55356,12 @@ function getCompliantFeatureIds(target, failOnNewly) {
         throw new Error(`Invalid target-baseline: ${target}. Must be 'widely', 'newly', or a year (e.g., '2023').`);
     }
 
-    for (const feature of allFeatures) {
-        const status = feature.status?.baseline || '';
-        const highDate = feature.status?.baseline_high_date || '';
-        const lowDate = feature.status?.baseline_low_date || '';
-        const featureId = feature.id || '';
+    // <-- CHANGE: Switched from Object.values() to Object.entries() to get the feature ID (the key)
+    for (const [featureId, featureData] of Object.entries(features)) {
+        // Robust handling of missing fields
+        const status = featureData.status?.baseline || '';
+        const highDate = featureData.status?.baseline_high_date || '';
+        const lowDate = featureData.status?.baseline_low_date || '';
 
         let isCompliant = false;
 
@@ -55936,28 +55371,40 @@ function getCompliantFeatureIds(target, failOnNewly) {
             isCompliant = true;
         }
 
-        if (failOnNewly && status === 'low') {
-            isCompliant = false;
-        }
-
         const targetYear = parseInt(lowerTarget, 10);
         if (!isNaN(targetYear)) {
+            // Check if the feature became newly available in or before the target year
             if (lowDate && toDate(lowDate).getFullYear() <= targetYear) {
                 isCompliant = true;
             }
+             // Also check high date for completeness
             if (highDate && toDate(highDate).getFullYear() <= targetYear) {
                 isCompliant = true;
+            }
+        }
+        
+        // This is the gate for the 'fail-on-newly' input
+        if (failOnNewly && status === 'low') {
+            // If the target is a year, we only fail if it became 'newly' available *after* the target year.
+            if (!isNaN(targetYear)) {
+                if (lowDate && toDate(lowDate).getFullYear() > targetYear) {
+                    isCompliant = false;
+                }
+            } else {
+                 // If target is 'widely', any 'low' status is a failure.
+                isCompliant = false;
             }
         }
 
         if (isCompliant && featureId) {
             compliantIds.add(featureId);
-            core.debug(`Compliant feature: ${featureId}`);
         }
     }
 
     if (compliantIds.size === 0) {
-        core.warning('No compliant features found. Check web-features data structure.');
+        core.warning(`Warning: No features found matching the "${target}" criteria. This might mean your target is too restrictive or the feature data is not as expected.`);
+    } else {
+        core.debug(`${compliantIds.size} compliant features found. Example: ${Array.from(compliantIds)[0]}`);
     }
 
     return compliantIds;
@@ -55965,7 +55412,6 @@ function getCompliantFeatureIds(target, failOnNewly) {
 
 async function run() {
     try {
-        // 1. Read Inputs
         const targetBaseline = core.getInput('target-baseline', { required: true });
         const scanFiles = core.getInput('scan-files', { required: true });
         const failOnNewly = core.getInput('fail-on-newly') === 'true';
@@ -55978,77 +55424,85 @@ async function run() {
         core.info(`Report Name: ${reportArtifactName}`);
         core.info('------------------------------------');
 
-        // 2. Get Compliant Features
         const compliantFeatureIds = getCompliantFeatureIds(targetBaseline, failOnNewly);
         core.info(`Found ${compliantFeatureIds.size} features matching Baseline criteria.`);
 
-        // 3. Scan Files (CSS and JS)
+        // The browserslist config for doiuse is "not supports <feature>", so we need the *inverse* set.
+        const allFeatureIds = new Set(Object.keys(features));
+        const nonCompliantFeatureIds = new Set([...allFeatureIds].filter(id => !compliantFeatureIds.has(id)));
+
+        core.info(`Checking against ${nonCompliantFeatureIds.size} non-compliant features.`);
+
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
+        
+        // <-- CHANGE: This is how you create and use a doiuse processor
+        const doiusePlugin = doiuse({
+            ignore: [], // You could add features to ignore here
+            onFeatureUsage: function (usageInfo) {
+                // We will check for compliance manually inside the loop
+            }
+        });
+        const processor = postcss([doiusePlugin]);
 
         for (const filePath of filePaths) {
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
             if (filePath.endsWith('.css')) {
-                const cssContent = fs.readFileSync(filePath, 'utf-8');
-                await index_postcss(new doiuse({
-                    browsers: [],
-                    onFeatureUsage: (usage) => {
-                        const featureId = usage.feature;
-                        if (!compliantFeatureIds.has(featureId)) {
-                            allViolations.push({
+                try {
+                    const result = await processor.process(fileContent, { from: filePath });
+                    for (const message of result.messages) {
+                        if (message.plugin === 'doiuse' && nonCompliantFeatureIds.has(message.feature)) {
+                             allViolations.push({
                                 file: filePath,
-                                line: usage.line || 'unknown',
-                                feature: featureId,
-                                reason: `Not found in Baseline Target: ${targetBaseline}`
+                                line: message.line || 'unknown',
+                                column: message.column || 'unknown',
+                                feature: message.feature,
+                                reason: `CSS feature '${message.feature}' is not compliant with the '${targetBaseline}' Baseline target.`
                             });
                         }
                     }
-                })).process(cssContent, { from: filePath });
+                } catch (err) {
+                    core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
+                }
             } else if (filePath.endsWith('.js')) {
-                const jsContent = fs.readFileSync(filePath, 'utf-8');
-                const nonCompliantAPIs = ['fetch', 'Promise.any'];
-                nonCompliantAPIs.forEach(api => {
-                    if (jsContent.includes(api)) {
+                 // You can enhance JS scanning here. This is a placeholder.
+                 // For now, we'll check against the non-compliant list.
+                 nonCompliantFeatureIds.forEach(api => {
+                    // This is a very basic check and can have false positives.
+                    // A more robust solution would use an AST parser.
+                    if (fileContent.includes(api)) {
                         allViolations.push({
                             file: filePath,
                             line: 'unknown',
+                            column: 'unknown',
                             feature: api,
-                            reason: `Non-compliant JS API for ${targetBaseline}`
+                            reason: `Potential usage of JS feature '${api}' which is not compliant with the '${targetBaseline}' Baseline target.`
                         });
                     }
                 });
             }
         }
 
-        // 4. CI Gate Logic
         if (allViolations.length > 0) {
             core.warning(`❌ Baseline Guard found ${allViolations.length} violations against the ${targetBaseline} target.`);
-
-            // Generate and save report
-            const reportPath = 'baseline-guard-report.html';
             const reportContent = generateReport(allViolations, targetBaseline);
-            fs.writeFileSync(reportPath, reportContent);
+            fs.writeFileSync(reportArtifactName, reportContent);
 
             core.startGroup('Violation Summary');
-            core.info('| File | Line | Feature | Reason |');
-            core.info('|---|---|---|---|');
             allViolations.forEach(v => {
-                core.info(`| ${v.file} | ${v.line} | ${v.feature} | ${v.reason} |`);
+                core.error(`[${v.file}:${v.line}:${v.column}] ${v.reason}`);
             });
             core.endGroup();
 
-            allViolations.forEach(v => {
-                core.error(`[VIOLATION] Feature "${v.feature}" in ${v.file}:${v.line} is not compliant with ${targetBaseline}. See report for details.`);
-            });
-
-            core.setFailed(`Build failed due to ${allViolations.length} Baseline violations.`);
             core.setOutput('violations-found', 'true');
+            core.setFailed(`Build failed due to ${allViolations.length} Baseline violations.`);
         } else {
             core.info('✅ Baseline Guard passed! All scanned features meet the target criteria.');
             core.setOutput('violations-found', 'false');
         }
 
     } catch (error) {
-        core.setFailed(`Action failed with error: ${error.message}`);
+        core.setFailed(`Action failed with error: ${error.message}\n${error.stack}`);
     }
 }
 

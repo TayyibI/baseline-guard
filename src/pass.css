@@ -1,2 +1,5 @@
-display: block;
-color: blue;
+/* src/pass.css */
+body {
+    display: block;
+    color: blue;
+}

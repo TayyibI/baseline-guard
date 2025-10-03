@@ -1,2 +1,5 @@
-display: grid;
-container-type: inline-size;
+/* src/fail.css */
+body {
+    display: grid;
+    container-type: inline-size;
+}

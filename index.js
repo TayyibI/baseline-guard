@@ -1,4 +1,3 @@
-
 const core = require('@actions/core');
 const fs = require('fs');
 const path = require('path');
@@ -15,6 +14,7 @@ try {
     const dataPath = require.resolve('web-features/data.json');
     features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
     core.debug('Loaded web-features: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]], null, 2));
 } catch (error) {
     core.setFailed(`Failed to load web-features: ${error.message}`);
     process.exit(1);
@@ -88,9 +88,10 @@ function getCompliantFeatureIds(target, failOnNewly) {
     }
 
     for (const feature of allFeatures) {
-        const status = feature.status?.baseline;
-        const highDate = feature.baseline_high_date;
-        const lowDate = feature.baseline_low_date;
+        // Handle missing or malformed status data
+        const status = feature.status?.baseline || '';
+        const highDate = feature.baseline_high_date || '';
+        const lowDate = feature.baseline_low_date || '';
 
         let isCompliant = false;
 
@@ -116,7 +117,12 @@ function getCompliantFeatureIds(target, failOnNewly) {
 
         if (isCompliant && feature.id) {
             compliantIds.add(feature.id);
+            core.debug(`Compliant feature: ${feature.id}`);
         }
+    }
+
+    if (compliantIds.size === 0) {
+        core.warning('No compliant features found. Check web-features data structure.');
     }
 
     return compliantIds;
@@ -161,7 +167,7 @@ async function run() {
                             });
                         }
                     }
-                }).process(cssContent, { from: filePath });
+                })(cssContent, { from: filePath });
             } else if (filePath.endsWith('.js')) {
                 const jsContent = fs.readFileSync(filePath, 'utf-8');
                 const nonCompliantAPIs = ['fetch', 'Promise.any'];

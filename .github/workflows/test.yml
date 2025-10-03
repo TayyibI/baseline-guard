@@ -21,4 +21,4 @@ jobs:
           name: ${{ inputs.report-artifact-name || 'baseline-guard-report' }}
           path: baseline-guard-report.md
       - name: Check Output
-        run: echo "Violations found: ${{ steps.baseline.outputs.violations-found }}"
+        run: echo "Violations found:${{ steps.baseline.outputs.violations-found }}"

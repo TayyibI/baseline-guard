@@ -1,3 +1,4 @@
+
 const core = require('@actions/core');
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +20,6 @@ try {
     process.exit(1);
 }
 
-// ... rest of index.js (generateReport, getCompliantFeatureIds, run) ...
 function generateReport(violations, targetBaseline) {
     let report = `
     <!DOCTYPE html>
@@ -27,9 +27,12 @@ function generateReport(violations, targetBaseline) {
     <head>
         <title>Baseline Guard Report</title>
         <style>
-            table { border-collapse: collapse; width: 100%; }
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { border-collapse: collapse; width: 100%; margin-top: 20px; }
             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
             th { background-color: #f2f2f2; }
+            h1 { color: #333; }
+            p { margin: 10px 0; }
         </style>
     </head>
     <body>
@@ -52,7 +55,8 @@ function generateReport(violations, targetBaseline) {
             </tr>
         `;
         violations.forEach(v => {
-            const mdnLink = `https://developer.mozilla.org/en-US/docs/Web/${v.feature.includes('css') ? 'CSS' : 'API'}/${v.feature.replace(/-/g, '_')}`;
+            const featureData = features[v.feature] || {};
+            const mdnLink = featureData.mdn_url || `https://developer.mozilla.org/en-US/docs/Web/${v.feature.includes('css') ? 'CSS' : 'API'}/${v.feature.replace(/-/g, '_')}`;
             report += `
             <tr>
                 <td>${v.file}</td>
@@ -121,10 +125,10 @@ function getCompliantFeatureIds(target, failOnNewly) {
 async function run() {
     try {
         // 1. Read Inputs
-        const targetBaseline = core.getInput('target-baseline');
-        const scanFiles = core.getInput('scan-files');
+        const targetBaseline = core.getInput('target-baseline', { required: true });
+        const scanFiles = core.getInput('scan-files', { required: true });
         const failOnNewly = core.getInput('fail-on-newly') === 'true';
-        const reportArtifactName = core.getInput('report-artifact-name');
+        const reportArtifactName = core.getInput('report-artifact-name') || 'baseline-guard-report.html';
 
         core.info('--- Baseline Guard Configuration ---');
         core.info(`Target Baseline: ${targetBaseline}`);
@@ -137,14 +141,13 @@ async function run() {
         const compliantFeatureIds = getCompliantFeatureIds(targetBaseline, failOnNewly);
         core.info(`Found ${compliantFeatureIds.size} features matching Baseline criteria.`);
 
-        // 3. Scan CSS Files
+        // 3. Scan Files (CSS and JS)
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
 
         for (const filePath of filePaths) {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
-
                 doiuse({
                     browsers: [],
                     onFeatureUsage: (usage) => {
@@ -159,6 +162,19 @@ async function run() {
                         }
                     }
                 }).process(cssContent, { from: filePath });
+            } else if (filePath.endsWith('.js')) {
+                const jsContent = fs.readFileSync(filePath, 'utf-8');
+                const nonCompliantAPIs = ['fetch', 'Promise.any'];
+                nonCompliantAPIs.forEach(api => {
+                    if (jsContent.includes(api)) {
+                        allViolations.push({
+                            file: filePath,
+                            line: 'unknown',
+                            feature: api,
+                            reason: `Non-compliant JS API for ${targetBaseline}`
+                        });
+                    }
+                });
             }
         }
 

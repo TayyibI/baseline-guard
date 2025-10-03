@@ -1,15 +1,15 @@
 {
   "name": "baseline-guard",
   "version": "1.0.0",
-  "description": "",
+  "description": "A GitHub Action to enforce Web Platform Baseline compliance.",
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist && ncc build index.js --license licenses.txt",
     "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["github-action", "web-features", "baseline", "css", "javascript"],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "doiuse": "^6.0.5",

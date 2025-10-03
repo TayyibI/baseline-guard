@@ -14,22 +14,28 @@ jobs:
         id: baseline_widely
         with:
           target-baseline: 'widely'
-          scan-files: 'src/**/*.css'
+          scan-files: 'src/**/*.{css,js}'
           fail-on-newly: 'true'
       - name: Check Output (Widely)
         run: echo "Violations found (widely):${{ steps.baseline_widely.outputs.violations-found }}"
+      - name: Upload Report Artifact (Widely)
+        if: steps.baseline_widely.outputs.violations-found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: baseline-guard-report-widely.html
+          path: baseline-guard-report.html
       - name: Run Baseline Guard (2023)
         uses: ./
         id: baseline_2023
         with:
           target-baseline: '2023'
-          scan-files: 'src/**/*.css'
+          scan-files: 'src/**/*.{css,js}'
           fail-on-newly: 'true'
+      - name: Check Output (2023)
+        run: echo "Violations found (2023):${{ steps.baseline_2023.outputs.violations-found }}"
       - name: Upload Report Artifact (2023)
         if: steps.baseline_2023.outputs.violations-found == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.report-artifact-name || 'baseline-guard-report.html' }}
+          name: baseline-guard-report-2023.html
           path: baseline-guard-report.html
-      - name: Check Output (2023)
-        run: echo "Violations found (2023):${{ steps.baseline_2023.outputs.violations-found }}"

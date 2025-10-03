@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  
   "scripts": {
-    "build": "rimraf dist && ncc build index.js --license licenses.txt",
+    "build": "rimraf dist && ncc build index.js --license licenses.txt && cp utils.js dist/",
     "start": "node index.js"
   },
   "keywords": [],

@@ -86,53 +86,41 @@ function getCompliantFeatureIds(target, failOnNewly) {
         throw new Error(`Invalid target-baseline: ${target}. Must be 'widely', 'newly', or a year (e.g., '2023').`);
     }
 
-    // <-- CHANGE: Switched from Object.values() to Object.entries() to get the feature ID (the key)
     for (const [featureId, featureData] of Object.entries(features)) {
-        // Robust handling of missing fields
         const status = featureData.status?.baseline || '';
-        const highDate = featureData.status?.baseline_high_date || '';
         const lowDate = featureData.status?.baseline_low_date || '';
 
         let isCompliant = false;
-
-        if (lowerTarget === 'widely' && status === 'high') {
-            isCompliant = true;
-        } else if (lowerTarget === 'newly' && (status === 'high' || status === 'low')) {
-            isCompliant = true;
-        }
-
-        const targetYear = parseInt(lowerTarget, 10);
-        if (!isNaN(targetYear)) {
-            // Check if the feature became newly available in or before the target year
-            if (lowDate && toDate(lowDate).getFullYear() <= targetYear) {
-                isCompliant = true;
-            }
-             // Also check high date for completeness
-            if (highDate && toDate(highDate).getFullYear() <= targetYear) {
-                isCompliant = true;
-            }
-        }
         
-        // This is the gate for the 'fail-on-newly' input
-        if (failOnNewly && status === 'low') {
-            // If the target is a year, we only fail if it became 'newly' available *after* the target year.
-            if (!isNaN(targetYear)) {
-                if (lowDate && toDate(lowDate).getFullYear() > targetYear) {
-                    isCompliant = false;
-                }
-            } else {
-                 // If target is 'widely', any 'low' status is a failure.
-                isCompliant = false;
+        // Determine initial compliance based on the target
+        if (lowerTarget === 'widely') {
+            if (status === 'high') {
+                isCompliant = true;
+            }
+        } else if (lowerTarget === 'newly') {
+            if (status === 'high' || status === 'low') {
+                isCompliant = true;
+            }
+        } else {
+            const targetYear = parseInt(lowerTarget, 10);
+            if (!isNaN(targetYear) && lowDate && toDate(lowDate).getFullYear() <= targetYear) {
+                isCompliant = true;
             }
         }
 
-        if (isCompliant && featureId) {
+        // Now, apply the `fail-on-newly` override.
+        // This will only set `isCompliant` to false if it was previously true for a 'low' status feature.
+        if (failOnNewly && status === 'low') {
+            isCompliant = false;
+        }
+
+        if (isCompliant) {
             compliantIds.add(featureId);
         }
     }
 
     if (compliantIds.size === 0) {
-        core.warning(`Warning: No features found matching the "${target}" criteria. This might mean your target is too restrictive or the feature data is not as expected.`);
+        core.warning(`No features found matching the "${target}" criteria. This might mean your target is too restrictive or the feature data is not as expected.`);
     } else {
         core.debug(`${compliantIds.size} compliant features found. Example: ${Array.from(compliantIds)[0]}`);
     }

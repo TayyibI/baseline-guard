@@ -14,5 +14,11 @@ jobs:
           target-baseline: '2023'
           scan-files: 'src/**/*.css' # Adjust to your repository
           fail-on-newly: 'true'
+      - name: Upload Report Artifact
+        if: steps.baseline.outputs.violations-found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.report-artifact-name || 'baseline-guard-report' }}
+          path: baseline-guard-report.md
       - name: Check Output
         run: echo "Violations found: ${{ steps.baseline.outputs.violations-found }}"

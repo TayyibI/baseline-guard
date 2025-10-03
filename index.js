@@ -5,23 +5,15 @@ const doiuse = require('doiuse');
 const { glob } = require('glob');
 const { toDate } = require('./utils');
 
-let features = {};
-
+let features;
 try {
-  const webFeatures = require("web-features");
-
-  // Convert file:// URLs to absolute paths if needed
-  if (webFeatures && webFeatures.features) {
-    features = webFeatures.features;
-  } else if (webFeatures.default?.features) {
-    features = webFeatures.default.features;
-  } else {
-    throw new Error("Could not load features from web-features");
-  }
-
-} catch (err) {
-  console.error("Failed to load web-features:", err);
-  process.exit(1);
+    // Always load web-features/data.json directly via require.resolve
+    const dataPath = require.resolve("web-features/data.json");
+    features = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+    core.debug('Loaded web-features from package: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+} catch (error) {
+    core.setFailed(`Failed to load web-features: ${error.message}`);
+    process.exit(1);
 }
 
 // ... rest of your index.js code (getCompliantFeatureIds, run, etc.) ...

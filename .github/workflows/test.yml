@@ -6,6 +6,20 @@ jobs:
   baseline_check:
     runs-on: ubuntu-latest
     steps:
+      - name: Run Baseline Guard (Widely)
+        uses: ./
+        id: baseline_widely
+        with:
+          target-baseline: 'widely'
+          scan-files: 'src/**/*.css'
+          fail-on-newly: 'true'
+      - name: Run Baseline Guard (2023)
+        uses: ./
+        id: baseline_2023
+        with:
+          target-baseline: '2023'
+          scan-files: 'src/**/*.css'
+          fail-on-newly: 'true'
       - uses: actions/checkout@v4
       - name: Run Baseline Guard
         uses: ./ # This points to the action in the current repository

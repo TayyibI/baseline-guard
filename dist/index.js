@@ -55216,28 +55216,6 @@ module.exports = { nanoid, customAlphabet }
 
 /***/ }),
 
-/***/ 73197:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   browsers: () => (/* binding */ browsers),
-/* harmony export */   features: () => (/* binding */ features),
-/* harmony export */   groups: () => (/* binding */ groups),
-/* harmony export */   snapshots: () => (/* binding */ snapshots)
-/* harmony export */ });
-/* harmony import */ var node_fs__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(73024);
-/* harmony import */ var node_url__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(73136);
-
-
-const jsonPath = (0,node_url__WEBPACK_IMPORTED_MODULE_1__.fileURLToPath)(__nccwpck_require__.ab + "data.json");
-const { browsers, features, groups, snapshots } = JSON.parse((0,node_fs__WEBPACK_IMPORTED_MODULE_0__.readFileSync)(jsonPath, { encoding: "utf-8" }));
-
-
-
-/***/ }),
-
 /***/ 73909:
 /***/ ((module) => {
 
@@ -55287,32 +55265,9 @@ module.exports = /*#__PURE__*/JSON.parse('{"v0.8":{"start":"2012-06-25","end":"2
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/compat */
@@ -55328,23 +55283,15 @@ const doiuse = __nccwpck_require__(13754);
 const { glob } = __nccwpck_require__(21363);
 const { toDate } = __nccwpck_require__(43271);
 
-let features = {};
-
+let features;
 try {
-  const webFeatures = __nccwpck_require__(73197);
-
-  // Convert file:// URLs to absolute paths if needed
-  if (webFeatures && webFeatures.features) {
-    features = webFeatures.features;
-  } else if (webFeatures.default?.features) {
-    features = webFeatures.default.features;
-  } else {
-    throw new Error("Could not load features from web-features");
-  }
-
-} catch (err) {
-  console.error("Failed to load web-features:", err);
-  process.exit(1);
+    // Always load web-features/data.json directly via require.resolve
+    const dataPath = __nccwpck_require__.ab + "data.json";
+    features = JSON.parse(fs.readFileSync(__nccwpck_require__.ab + "data.json", "utf-8"));
+    core.debug('Loaded web-features from package: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+} catch (error) {
+    core.setFailed(`Failed to load web-features: ${error.message}`);
+    process.exit(1);
 }
 
 // ... rest of your index.js code (getCompliantFeatureIds, run, etc.) ...

@@ -15,7 +15,7 @@ inputs:
   report-artifact-name:
     description: 'The name of the HTML report artifact to upload on failure.'
     required: false
-    default: 'baseline-guard-report'
+    default: 'baseline-guard-report.html'
 outputs:
   violations-found:
     description: 'A boolean indicating if any violations were found.'

@@ -7,22 +7,13 @@ const { toDate } = require('./utils');
 
 let features;
 try {
-    // Always load web-features/data.json directly via require.resolve
-    const dataPath = require.resolve("web-features/data.json");
-    features = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
-    core.debug('Loaded web-features from package: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+    const dataPath = require.resolve('web-features/data.json');
+    features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+    core.debug('Loaded web-features: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
 } catch (error) {
     core.setFailed(`Failed to load web-features: ${error.message}`);
     process.exit(1);
 }
-
-// ... rest of your index.js code (getCompliantFeatureIds, run, etc.) ...
-/**
- * Maps the user's target-baseline input to a list of feature IDs that meet that standard.
- * @param {string} target The user input (e.g., 'widely', 'newly', '2023').
- * @param {boolean} failOnNewly If true, 'newly' available features are considered non-compliant.
- * @returns {Set<string>} A Set of Baseline compliant feature IDs.
- */
 
 function generateReport(violations, targetBaseline) {
     let report = `
@@ -63,7 +54,7 @@ function generateReport(violations, targetBaseline) {
                 <td>${v.line}</td>
                 <td>${v.feature}</td>
                 <td>${v.reason}</td>
-                <td><a href="${mdnLink}">MDN</a></td>
+                <td><a href="${mdnLink}" target="_blank">MDN</a></td>
             </tr>
             `;
         });
@@ -79,14 +70,19 @@ function generateReport(violations, targetBaseline) {
 function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
     const allFeatures = Object.values(features);
-    
+
     const lowerTarget = target.toLowerCase();
+
+    // Validate target-baseline
+    if (!['widely', 'newly'].includes(lowerTarget) && isNaN(parseInt(lowerTarget))) {
+        throw new Error(`Invalid target-baseline: ${target}. Must be 'widely', 'newly', or a year (e.g., '2023').`);
+    }
 
     for (const feature of allFeatures) {
         const status = feature.status?.baseline;
         const highDate = feature.baseline_high_date;
         const lowDate = feature.baseline_low_date;
-        
+
         let isCompliant = false;
 
         if (lowerTarget === 'widely' && status === 'high') {
@@ -94,7 +90,7 @@ function getCompliantFeatureIds(target, failOnNewly) {
         } else if (lowerTarget === 'newly' && (status === 'high' || status === 'low')) {
             isCompliant = true;
         }
-        
+
         if (failOnNewly && status === 'low') {
             isCompliant = false;
         }
@@ -108,12 +104,12 @@ function getCompliantFeatureIds(target, failOnNewly) {
                 isCompliant = true;
             }
         }
-        
+
         if (isCompliant && feature.id) {
             compliantIds.add(feature.id);
         }
     }
-    
+
     return compliantIds;
 }
 
@@ -132,11 +128,11 @@ async function run() {
         core.info(`Report Name: ${reportArtifactName}`);
         core.info('------------------------------------');
 
-        // 2. Get Compliant Features (Phase 2)
+        // 2. Get Compliant Features
         const compliantFeatureIds = getCompliantFeatureIds(targetBaseline, failOnNewly);
         core.info(`Found ${compliantFeatureIds.size} features matching Baseline criteria.`);
 
-        // 3. Scan CSS Files (Phase 3)
+        // 3. Scan CSS Files
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
 
@@ -144,11 +140,10 @@ async function run() {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
 
-                // Process CSS content with doiuse
                 doiuse({
-                    browsers: [], // Empty since we're using a custom feature list
+                    browsers: [],
                     onFeatureUsage: (usage) => {
-                        const featureId = usage.feature; // doiuse uses BCD keys
+                        const featureId = usage.feature;
                         if (!compliantFeatureIds.has(featureId)) {
                             allViolations.push({
                                 file: filePath,
@@ -163,17 +158,25 @@ async function run() {
         }
 
         // 4. CI Gate Logic
-        // ... inside run() function, replace the report generation section ...
         if (allViolations.length > 0) {
             core.warning(`❌ Baseline Guard found ${allViolations.length} violations against the ${targetBaseline} target.`);
 
             // Generate and save report
-            const reportPath = 'baseline-guard-report.md';
+            const reportPath = 'baseline-guard-report.html';
             const reportContent = generateReport(allViolations, targetBaseline);
             fs.writeFileSync(reportPath, reportContent);
 
+            core.startGroup('Violation Summary');
+            core.info('| File | Line | Feature | Reason |');
+            core.info('|---|---|---|---|');
             allViolations.forEach(v => {
-                core.error(`[VIOLATION] Feature "${v.feature}" in ${v.file}:${v.line} is not compliant with ${targetBaseline}. See report for details.`);            });
+                core.info(`| ${v.file} | ${v.line} | ${v.feature} | ${v.reason} |`);
+            });
+            core.endGroup();
+
+            allViolations.forEach(v => {
+                core.error(`[VIOLATION] Feature "${v.feature}" in ${v.file}:${v.line} is not compliant with ${targetBaseline}. See report for details.`);
+            });
 
             core.setFailed(`Build failed due to ${allViolations.length} Baseline violations.`);
             core.setOutput('violations-found', 'true');

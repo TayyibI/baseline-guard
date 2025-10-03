@@ -5,7 +5,10 @@ on: [push]
 jobs:
   baseline_check:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
     steps:
+      - uses: actions/checkout@v4
       - name: Run Baseline Guard (Widely)
         uses: ./
         id: baseline_widely
@@ -13,6 +16,8 @@ jobs:
           target-baseline: 'widely'
           scan-files: 'src/**/*.css'
           fail-on-newly: 'true'
+      - name: Check Output (Widely)
+        run: echo "Violations found (widely): ${{ steps.baseline_widely.outputs.violations-found }}"
       - name: Run Baseline Guard (2023)
         uses: ./
         id: baseline_2023
@@ -20,19 +25,11 @@ jobs:
           target-baseline: '2023'
           scan-files: 'src/**/*.css'
           fail-on-newly: 'true'
-      - uses: actions/checkout@v4
-      - name: Run Baseline Guard
-        uses: ./ # This points to the action in the current repository
-        id: baseline
-        with:
-          target-baseline: '2023'
-          scan-files: 'src/**/*.css' # Adjust to your repository
-          fail-on-newly: 'true'
-      - name: Upload Report Artifact
-        if: steps.baseline.outputs.violations-found == 'true'
+      - name: Upload Report Artifact (2023)
+        if: steps.baseline_2023.outputs.violations-found == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.report-artifact-name || 'baseline-guard-report' }}
-          path: baseline-guard-report.md
-      - name: Check Output
-        run: echo "Violations found:${{ steps.baseline.outputs.violations-found }}"
+          name: ${{ inputs.report-artifact-name || 'baseline-guard-report.html' }}
+          path: baseline-guard-report.html
+      - name: Check Output (2023)
+        run: echo "Violations found (2023):${{ steps.baseline_2023.outputs.violations-found }}"

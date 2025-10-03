@@ -151,27 +151,30 @@ async function run() {
         // 3. Scan Files (CSS and JS)
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
-
+        const doiuseProcessor = doiuse({
+            browsers: Array.from(compliantFeatureIds), // This tells doiuse what features ARE allowed
+            ignore: [], // You can add features to ignore here if needed
+            });
         for (const filePath of filePaths) {
             if (filePath.endsWith('.css')) {
                 const cssContent = fs.readFileSync(filePath, 'utf-8');
                 try {
-                    doiuse(cssContent, {
-                        browsers: [],
-                        onFeatureUsage: (usage) => {
-                            const featureId = usage.feature;
-                            if (!compliantFeatureIds.has(featureId)) {
-                                allViolations.push({
-                                    file: filePath,
-                                    line: usage.line || 'unknown',
-                                    feature: featureId,
-                                    reason: `Not found in Baseline Target: ${targetBaseline}`
-                                });
-                            }
-                        }
+                // Use the processor to analyze the CSS
+                const result = await doiuseProcessor(cssContent, filePath);
+                result.warnings.forEach(warning => {
+                    // Extract the feature identifier from the warning message
+                    const featureMatch = warning.text.match(/Not supported in (.+?)\s/);
+                    const featureId = featureMatch ? featureMatch[1] : 'unknown-feature';
+                    
+                    allViolations.push({
+                    file: filePath,
+                    line: warning.line || 'unknown',
+                    feature: featureId,
+                    reason: `CSS feature not compliant with ${targetBaseline}`
                     });
+                });
                 } catch (err) {
-                    core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
+                core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
                 }
             } else if (filePath.endsWith('.js')) {
                 const jsContent = fs.readFileSync(filePath, 'utf-8');

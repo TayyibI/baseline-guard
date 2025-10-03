@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 // const { getFeatures } = require('web-features'); // This will be used in Phase 2
-
+const { toDate } = require('./utils');
 async function run() {
   try {
     // 1. Read Inputs

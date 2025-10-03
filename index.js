@@ -80,6 +80,16 @@ function getCompliantFeatureIds(target, failOnNewly) {
     const compliantIds = new Set();
     const allFeatures = Object.values(features);
 
+    // Add debug logging to understand the data structure
+    core.debug(`Total features loaded: ${allFeatures.length}`);
+    if (allFeatures.length > 0) {
+        const sampleFeature = allFeatures[0];
+        core.debug(`Sample feature structure: ${JSON.stringify(sampleFeature, null, 2)}`);
+        core.debug(`Sample feature ID: ${sampleFeature.id}`);
+        core.debug(`Sample feature baseline status: ${sampleFeature.status?.baseline}`);
+    }
+    
+
     const lowerTarget = target.toLowerCase();
 
     // Validate target-baseline

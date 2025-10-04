@@ -4,7 +4,7 @@
   "description": "A GitHub Action to enforce Web Platform Baseline compliance.",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && ncc build index.js --license licenses.txt && copyfiles -u 1 node_modules/data.json dist",
+    "build": "rimraf dist && ncc build index.js --license licenses.txt && copyfiles -u 1 node_modules/web-features/data.json dist",
     "start": "node index.js"
   },
   "keywords": [

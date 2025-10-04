@@ -4,10 +4,16 @@
   "description": "A GitHub Action to enforce Web Platform Baseline compliance.",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && ncc build index.js --license licenses.txt",
+    "build": "rimraf dist && ncc build index.js --license licenses.txt && copyfiles -u 1 node_modules/web-features/data.json dist",
     "start": "node index.js"
   },
-  "keywords": ["github-action", "web-features", "baseline", "css", "javascript"],
+  "keywords": [
+    "github-action",
+    "web-features",
+    "baseline",
+    "css",
+    "javascript"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
@@ -19,6 +25,7 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",
+    "copyfiles": "^2.4.1",
     "rimraf": "^6.0.1"
   }
 }

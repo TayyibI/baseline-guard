@@ -55273,7 +55273,7 @@ const fs = __nccwpck_require__(79896);
 const path = __nccwpck_require__(16928);
 const doiuse = __nccwpck_require__(13754);
 const { glob } = __nccwpck_require__(21363);
-const postcss = __nccwpck_require__(11044); // <-- CHANGE: Import postcss
+const postcss = __nccwpck_require__(11044);
 
 // Inline toDate function
 function toDate(dateString) {
@@ -55282,12 +55282,19 @@ function toDate(dateString) {
 
 let features;
 try {
-    const dataPath = __nccwpck_require__.ab + "data.json";
-    features = JSON.parse(fs.readFileSync(__nccwpck_require__.ab + "data.json", 'utf-8'));
+    // CHANGE: Load the data.json file from the same directory as the script.
+    // The build process now copies it to the 'dist' folder.
+    const dataPath = path.join(__dirname, 'data.json');
+    features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+
+    // DEBUGGING: Add this line to confirm the fix.
+    core.info(`Successfully loaded web-features. Total features found: ${Object.keys(features).length}`);
+
 } catch (error) {
-    core.setFailed(`Failed to load web-features: ${error.message}`);
+    core.setFailed(`Failed to load web-features from ${path.join(__dirname, 'data.json')}: ${error.message}`);
     process.exit(1);
 }
+
 
 function generateReport(violations, targetBaseline) {
     let report = `

@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const doiuse = require('doiuse');
 const { glob } = require('glob');
-const postcss = require('postcss'); // <-- CHANGE: Import postcss
+const postcss = require('postcss');
 
 // Inline toDate function
 function toDate(dateString) {
@@ -12,12 +12,19 @@ function toDate(dateString) {
 
 let features;
 try {
-    const dataPath = require.resolve('web-features/data.json');
+    // CHANGE: Load the data.json file from the same directory as the script.
+    // The build process now copies it to the 'dist' folder.
+    const dataPath = path.join(__dirname, 'data.json');
     features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+
+    // DEBUGGING: Add this line to confirm the fix.
+    core.info(`Successfully loaded web-features. Total features found: ${Object.keys(features).length}`);
+
 } catch (error) {
-    core.setFailed(`Failed to load web-features: ${error.message}`);
+    core.setFailed(`Failed to load web-features from ${path.join(__dirname, 'data.json')}: ${error.message}`);
     process.exit(1);
 }
+
 
 function generateReport(violations, targetBaseline) {
     let report = `

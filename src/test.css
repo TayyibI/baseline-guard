@@ -1,0 +1,17 @@
+/* This feature is Widely Available and should pass all checks. */
+.container {
+    display: flex;
+}
+
+/* This feature (CSS Nesting) is only Newly Available.
+  It should FAIL when the target is 'widely' with 'fail-on-newly: true'.
+  It should PASS when the target is 'newly' or '2023'.
+  It should FAIL when the target is '2022'.
+*/
+.card {
+    border: 1px solid black;
+
+    & h2 {
+        color: blue;
+    }
+}

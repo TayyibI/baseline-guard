@@ -7,24 +7,24 @@ const postcss = require('postcss');
 
 // Inline toDate function
 function toDate(dateString) {
-    return new Date(dateString);
+    return dateString ? new Date(dateString) : null;
 }
 
 let features;
 try {
-    // CHANGE: Load the data.json file from the same directory as the script.
-    // The build process now copies it to the 'dist' folder.
+    // Fixed path to match 'dist/web-features/data.json'
     const dataPath = path.join(__dirname, 'data.json');
     features = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 
-    // DEBUGGING: Add this line to confirm the fix.
+    // DEBUGGING: Log feature count and sample data
     core.info(`Successfully loaded web-features. Total features found: ${Object.keys(features).length}`);
+    core.debug('Sample feature keys: ' + JSON.stringify(Object.keys(features).slice(0, 5)));
+    core.debug('Sample feature data: ' + JSON.stringify(features[Object.keys(features)[0]] || {}, null, 2));
 
 } catch (error) {
     core.setFailed(`Failed to load web-features from ${path.join(__dirname, 'data.json')}: ${error.message}`);
     process.exit(1);
 }
-
 
 function generateReport(violations, targetBaseline) {
     let report = `
@@ -96,10 +96,11 @@ function getCompliantFeatureIds(target, failOnNewly) {
     for (const [featureId, featureData] of Object.entries(features)) {
         const status = featureData.status?.baseline || '';
         const lowDate = featureData.status?.baseline_low_date || '';
+        const highDate = featureData.status?.baseline_high_date || '';
 
         let isCompliant = false;
-        
-        // Determine initial compliance based on the target
+
+        // Determine compliance based on target
         if (lowerTarget === 'widely') {
             if (status === 'high') {
                 isCompliant = true;
@@ -110,26 +111,31 @@ function getCompliantFeatureIds(target, failOnNewly) {
             }
         } else {
             const targetYear = parseInt(lowerTarget, 10);
-            if (!isNaN(targetYear) && lowDate && toDate(lowDate).getFullYear() <= targetYear) {
-                isCompliant = true;
+            if (!isNaN(targetYear)) {
+                if (lowDate && toDate(lowDate)?.getFullYear() <= targetYear) {
+                    isCompliant = true;
+                }
+                if (highDate && toDate(highDate)?.getFullYear() <= targetYear) {
+                    isCompliant = true;
+                }
             }
         }
 
-        // Now, apply the `fail-on-newly` override.
-        // This will only set `isCompliant` to false if it was previously true for a 'low' status feature.
+        // Apply fail-on-newly override
         if (failOnNewly && status === 'low') {
             isCompliant = false;
         }
 
         if (isCompliant) {
             compliantIds.add(featureId);
+            core.debug(`Compliant feature: ${featureId}`);
         }
     }
 
     if (compliantIds.size === 0) {
         core.warning(`No features found matching the "${target}" criteria. This might mean your target is too restrictive or the feature data is not as expected.`);
     } else {
-        core.debug(`${compliantIds.size} compliant features found. Example: ${Array.from(compliantIds)[0]}`);
+        core.info(`${compliantIds.size} compliant features found. Example: ${Array.from(comiantIds)[0] || 'none'}`);
     }
 
     return compliantIds;
@@ -152,20 +158,19 @@ async function run() {
         const compliantFeatureIds = getCompliantFeatureIds(targetBaseline, failOnNewly);
         core.info(`Found ${compliantFeatureIds.size} features matching Baseline criteria.`);
 
-        // The browserslist config for doiuse is "not supports <feature>", so we need the *inverse* set.
+        // Inverse set for non-compliant features
         const allFeatureIds = new Set(Object.keys(features));
         const nonCompliantFeatureIds = new Set([...allFeatureIds].filter(id => !compliantFeatureIds.has(id)));
-
         core.info(`Checking against ${nonCompliantFeatureIds.size} non-compliant features.`);
 
         const allViolations = [];
         const filePaths = await glob(scanFiles, { ignore: 'node_modules/**' });
-        
-        // <-- CHANGE: This is how you create and use a doiuse processor
+
+        // Create doiuse processor
         const doiusePlugin = doiuse({
-            ignore: [], // You could add features to ignore here
+            ignore: [],
             onFeatureUsage: function (usageInfo) {
-                // We will check for compliance manually inside the loop
+                // Handled in the loop below
             }
         });
         const processor = postcss([doiusePlugin]);
@@ -177,7 +182,7 @@ async function run() {
                     const result = await processor.process(fileContent, { from: filePath });
                     for (const message of result.messages) {
                         if (message.plugin === 'doiuse' && nonCompliantFeatureIds.has(message.feature)) {
-                             allViolations.push({
+                            allViolations.push({
                                 file: filePath,
                                 line: message.line || 'unknown',
                                 column: message.column || 'unknown',
@@ -190,11 +195,9 @@ async function run() {
                     core.error(`Failed to process CSS file ${filePath}: ${err.message}`);
                 }
             } else if (filePath.endsWith('.js')) {
-                 // You can enhance JS scanning here. This is a placeholder.
-                 // For now, we'll check against the non-compliant list.
-                 nonCompliantFeatureIds.forEach(api => {
-                    // This is a very basic check and can have false positives.
-                    // A more robust solution would use an AST parser.
+                // Enhanced JS scanning (basic for now)
+                const nonCompliantAPIs = ['fetch', 'Promise.any', 'container-type']; // Add known non-compliant features
+                nonCompliantAPIs.forEach(api => {
                     if (fileContent.includes(api)) {
                         allViolations.push({
                             file: filePath,
